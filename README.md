@@ -44,6 +44,6 @@ websvr.js代码如下：
 至此，一个简单的Once.io服务器就搭建好了。
 
 
-  [1]: https://cloud.githubusercontent.com/assets/14871820/19373905/362eb102-91fa-11e6-938e-f35573a9155c.png
-  [2]: https://cloud.githubusercontent.com/assets/14871820/19373913/3c3308aa-91fa-11e6-9db3-35f18bb7b16b.png
-  [3]: https://cloud.githubusercontent.com/assets/14871820/19373908/38f5306e-91fa-11e6-8321-d3849ac3c0b2.png
+  [1]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson1/onceio_path.png
+  [2]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson1/cmd.png
+  [3]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson1/webpage.png
