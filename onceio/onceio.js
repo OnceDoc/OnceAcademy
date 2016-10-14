@@ -85,7 +85,7 @@ var OnceIO = module.exports = function(options) {
     //enable debug information output
     , debug: true
     //enable cache of template/include file (when enabled templates will not be refreshed before restart)
-    , templateCache: true
+    , templateCache: false
     //load from cache When size is smaller than fileCacheSize(css/js/images, 0 is disabled)
     , fileCacheSize: 0
     //show errors to user(displayed in response)
@@ -976,6 +976,7 @@ var OnceIO = module.exports = function(options) {
     return listDir;
   }());
 
+
   /*
   * Template Engine
   */
@@ -988,8 +989,6 @@ var OnceIO = module.exports = function(options) {
     var includeBeginLen = 14
     var includeAfterLen = 4
 
-    //default engine and defaultModel (e.g., define global footer/header in model)
-    var engineFunc    = require("dot").compile
     var defaultModel  = null
 
     /*
@@ -1101,6 +1100,8 @@ var OnceIO = module.exports = function(options) {
         render: function(tmplUrl, _model, isRawTmpl) {
           var res = this
           var len = arguments.length
+          var idx
+          var ext
 
           /*
           format
@@ -1115,11 +1116,16 @@ var OnceIO = module.exports = function(options) {
               */
               tmplUrl = res.req.url.substr(1);
 
-              var idx = tmplUrl.indexOf('?');
+              idx = tmplUrl.indexOf('?');
               idx > -1 && (tmplUrl = tmplUrl.substr(0, idx));
             } else {
               _model   = {};
             }
+          }
+
+          var idx = tmplUrl.lastIndexOf('.')
+          if (idx > 0) {
+            ext = tmplUrl.substr(idx + 1)
           }
 
           /*
@@ -1138,11 +1144,9 @@ var OnceIO = module.exports = function(options) {
           response
           */
           var render = function(chrunk) {
-            var tmplFn;
-
             try {
-              tmplFn = engineFunc(chrunk);
-              res.end(tmplFn(model));
+              var html = Template.getEngine(ext)(chrunk, model);
+              res.end(html);
             } catch(err) {
               /*
               refer: https://code.google.com/p/v8/issues/detail?id=1914
@@ -1161,7 +1165,7 @@ var OnceIO = module.exports = function(options) {
                 pos = parseInt(pos)
 
                 if (pos) {
-                  var strFn   = (tmplFn || '').toString()
+                  var strFn   = (chrunk || '').toString()
                   var errStr  = strFn.substring(pos - 10, pos + 100)
                   errmsg += ':' + errStack + '\n    ' + errStr
                 }
@@ -1183,8 +1187,26 @@ var OnceIO = module.exports = function(options) {
           this.render(rawTmpl, model, true);
         }
       , error: error
-      , engine: function(_engineFunc) {
-          engineFunc = _engineFunc;
+      , engines: {
+          '' : function(chrunk, model) {
+              //default engines
+              var compiler  = require("dot").compile;
+              var tmplFn    = compiler(chrunk);
+              return tmplFn(model);
+          }
+        }
+      , setEngine: function(extname, _engineFunc) {
+          var self = this;
+          if (arguments.length < 2) {
+            self.engines[''] = _engineFunc
+            return
+          }
+
+          self.engines[extname] = _engineFunc;
+        }
+      , getEngine: function(extname) {
+          var self = this;
+          return self.engines[extname || ''] || self.engines['']
         }
       , model: function(_model) {
           defaultModel = _model;
@@ -1261,7 +1283,7 @@ var OnceIO = module.exports = function(options) {
 
         res.statusCode = 200;
         res.type(phyPath);
-        res.setHeader('Etag', cachedFile.etag || '');
+        res.setHeader('Etag', cachedFile.ino || '');
         res.setHeader('Last-Modified', cachedFile.mtime.toUTCString());
 
         // The file is modified
@@ -1329,7 +1351,7 @@ var OnceIO = module.exports = function(options) {
                     size  : stat.size
                   , data  : data
                   , gzip  : decoded
-                  , etag  : stat.ino.toString(32) + '-' + stat.size.toString(32) + '-' + (+new Date(stat.mtime)).toString(32)
+                  , ino   : stat.ino
                   , mtime : stat.mtime
                 }
               });
@@ -1442,17 +1464,62 @@ var OnceIO = module.exports = function(options) {
   }
 
   //cache control header
-  var cacheHandler = function(second) {
-    var res     = this;
-    var second  = parseInt(second) || 0
+  var cacheHandler = function(states, second) {
+    var res = this;
+    var req = res.req;
+    var len = arguments.length
+
+    if (states && states.mtime && states.ino)  {
+      res.setHeader('Etag', states.ino);
+      res.setHeader('Last-Modified', states.mtime.toUTCString());
+
+      if (len < 2) {
+        return false;
+      }
+    }
+
+    if (len < 2) {
+      second = states;
+    }
+
+    var second  = parseInt(states) || 0;
     res.getHeader('Cache-Control') && res.removeHeader("Cache-Control");
     res.setHeader('Cache-Control', 'max-age=' + second);
+
+    return false;
   }
 
-  //send sth
+  var isCached = function(states) {
+    var req = this;
+
+    // using client cache
+    var cacheTime = new Date(req.headers['if-modified-since'] || 1);
+    if (Math.abs(states.mtime - cacheTime) < 1000) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /*
+  send sth
+  send(304)
+  send('hellow world')
+  send(200, 'hello world')
+  send('json', { go, go, go })
+  send({ ok: 1 })
+  send('html', '<html></html>')
+  */
   var sendHandler = function(type, content) {
     var res = this;
+
     if (arguments.length < 2) {
+      if (typeof type == 'number') {
+        res.statusCode = type;
+        res.end();
+        return
+      }
+
       content = type;
       type    = null;
     }
@@ -1467,6 +1534,7 @@ var OnceIO = module.exports = function(options) {
         ? (res.statusCode = type)
         : res.type(type);
     }
+
     res.end(content || '');
   }
 
@@ -1488,10 +1556,12 @@ var OnceIO = module.exports = function(options) {
     res.render    = Template.render;
     res.renderRaw = Template.renderRaw;
 
-    //params in the matched url
-    req.params  = {};
     //default model
     res.model   = {};
+
+    //params in the matched url
+    req.params  = {};
+    req.cached  = isCached;
 
     //initial httprequest
     var filterChain = new FilterChain(function() {
@@ -1552,7 +1622,8 @@ var OnceIO = module.exports = function(options) {
   self.settings = Settings;
 
   //Template
-  self.engine   = Template.engine;
+  self.engine   = Template.setEngine;
+  self.engines  = Template.engines;
   self.model    = Template.model;
   self.clear    = Template.clear;
   self.preload  = Template.preload;    //preload templates
