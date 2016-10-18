@@ -29,7 +29,7 @@ Git Bash 界面如下：
     })  
     
 
-OnceIO 的模板引擎接口与 Express 有一些不同，例如，在使用 pug 或 ETS 时，Express 中 require 函数的两个参数分别为 path 和 option，而 OnceIO 中则分别为 content 和 option：  
+OnceIO 的模板引擎接口与 Express 有一些不同，例如，在使用 pug 或 ETS 时，Express 中 require 函数的第一个参数为路径，而 OnceIO 中则为内容：  
 
     //Comparison between Express and OnceIO when using pug
     require('pug').__express(path, option)
