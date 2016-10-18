@@ -2,7 +2,7 @@
 ### Lesson2 - 在 OnceIO 中安装、使用和更换模板引擎    
 ##### 一、安装模板引擎  
 
-使用 Git Bash 在项目文件夹安装模板引擎。以 EJS 为例，使用的命令是：  
+除了 OnceIO 的默认模板引擎 doT.js，在使用任何一种模板引擎之前都需要先用 cmd 在项目文件夹安装这种模板引擎。以使用 Git Bash 安装 EJS 为例，使用的命令是：  
     
     $ npm install ejs  
 Git Bash 界面如下：
@@ -39,7 +39,7 @@ OnceIO 的模板引擎接口与 Express 有一些不同，例如，在使用 pug
     require('ejs').__express(path, option)
     require('ejs').render(content, option)
 
-再在项目文件夹中创建一个模板文件 dot.tmpl，代码如下：  
+创建好服务器文件后，再在项目文件夹中创建一个模板文件 dot.tmpl，代码如下：  
 
     <!DOCTYPE html>
     <body>
@@ -56,21 +56,23 @@ OnceIO 的模板引擎接口与 Express 有一些不同，例如，在使用 pug
 
 OnceIO 支持所有 Node.js 模板引擎，您可以根据自己的需要或喜好更换模板引擎。  
 
-例如，当您想使用 EJS 模板引擎时，可将 websvr.js 中的 app.get() 部分替换成：  
+例如，当您想使用 EJS 模板引擎时，可在项目文件夹中安装 EJS 后将 websvr.js 中的 app.get() 部分替换成：  
 
     app.engine('ejs', require('ejs').render)
 
-    app.get('ejs', function(req, res) {
-      res.render('ejs.ejs', {
+    //example_ejs.ejs 是根据 EJS 格式要求修改原模板文件得到的新模板文件
+    app.get('example_ejs', function(req, res) {
+      res.render('example_ejs.ejs', {
           username: 'Kris'
       })
     })
-当您想使用 pug 模板引擎时，可替换成：  
+当您想使用 pug 模板引擎时，可在项目文件夹中安装 pug 后将 websvr.js 中的 app.get() 部分替换成：   
 
     app.engine('pug', require('pug').render);
 
-    app.get('/pug', function(req, res) {
-      res.render('pug.pug', {
+    //example_pug.pug 是根据 pug 格式要求修改原模板文件得到的新模板文件
+    app.get('/example_pug', function(req, res) {
+      res.render('example_pug.pug', {
           username: 'Kris'
         , youAreUsingPug: true
       })
