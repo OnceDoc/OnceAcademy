@@ -86,7 +86,7 @@ form.html 的代码如下：
       res.send('req.body: ' + JSON.stringify(req.body))
     }, 'qs')  
     
-为减少 IO，app.url()默认不加载 req.body，如需加载，需要把它的第三个参数设置为'qs'. app.url()的第三个参数还有其它设置方法，我们会在之后的课程中进一步说明。  
+为减少 IO，app.url() 默认不加载 req.body，如需加载，需要把它的第三个参数设置为 'qs' 或 {POST : 'qs'}. app.url() 的第三个参数还有其它设置方法，我们会在之后的课程中进一步说明。  
 
 将 form.html 文件中 body 里的内容替换为：  
 
