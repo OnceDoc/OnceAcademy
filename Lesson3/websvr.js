@@ -1,21 +1,37 @@
 var onceio = require('../onceio/onceio')
-var app = onceio()
+
+var app = onceio({
+    home   :  './'
+  , port   :  8054
+  , listDir:  true
+  , debug  :  false
+})
 
 
-var myLogger = function(req, res) {
-  console.log('LOGGED')
-  req.filter.next()
-}
-var requestTime = function(req, res) {
-  req.requestTime = Date.now()
-  req.filter.next()
-}
+// Using default doT.js template engine
+app.get('/dot', function(req, res) {
+  res.render('dot.tmpl', {
+    username: 'Kris'
+  })
+})
 
-app.use(myLogger)
-app.use(requestTime)
 
-app.get('/', function(req, res) {
-  var responseText = 'Hello World!<br>';
-  responseText += '<small>Requested at: ' + req.requestTime + '</small>';
-  res.send(responseText);
-}) 
+// Using pug template engine
+app.engine('pug', require('pug').render);
+
+app.get('/example_pug', function(req, res) {
+  res.render('example_pug.pug', {
+      username: 'Kris'
+    , youAreUsingPug: true
+  })
+})
+
+
+// Using EJS template engine
+app.engine('ejs', require('ejs').render)
+
+app.get('/example_ejs', function(req, res) {
+  res.render('example_ejs.ejs', {
+      username: 'Kris'
+  })
+})

@@ -1,5 +1,5 @@
 # OnceAcademy
-### Lesson 2 - 安装、使用和更换模板引擎    
+### Lesson 3 - 安装、使用和更换模板引擎    
 ##### 一、安装模板引擎  
 
 除了 OnceIO 的默认模板引擎 doT.js，在使用任何一种模板引擎之前都需要先用 cmd 在项目文件夹安装这种模板引擎。以使用 Git Bash 安装 EJS 为例，使用的命令是：  
@@ -66,6 +66,15 @@ OnceIO 支持所有 Node.js 模板引擎，您可以根据自己的需要或喜�
           username: 'Kris'
       })
     })
+  
+模板文件 example_ejs.ejs 的代码为：  
+  
+    <!DOCTYPE html>
+    <body>
+      <h1> Hello, <%= username %> </h1>
+    </body>
+    </html>
+
 当您想使用 pug 模板引擎时，可在项目文件夹中安装 pug 后将 websvr.js 中的 app.get() 部分替换成：   
 
     app.engine('pug', require('pug').render);
@@ -77,11 +86,17 @@ OnceIO 支持所有 Node.js 模板引擎，您可以根据自己的需要或喜�
         , youAreUsingPug: true
       })
     })
+  
+模板文件 example_pug.pug 的代码为：  
+  
+    doctype html
+    html
+      body
+        h1 Hello, #{username}
 
 
 
 
 
-
-  [1]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson2/install_ejs.png
-  [2]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson2/dot_webpage.png
+  [1]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson3/install_ejs.png
+  [2]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson3/dot_webpage.png
