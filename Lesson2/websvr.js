@@ -1,7 +1,7 @@
 var onceio = require('../onceio/onceio')
 
 var app = onceio({
-    home   :  "./"
+    home   :  './'
   , port   :  8054
   , listDir:  true
   , debug  :  false

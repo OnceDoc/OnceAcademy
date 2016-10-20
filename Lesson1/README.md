@@ -1,5 +1,5 @@
 # OnceAcademy
-### Lesson1 - 用 OnceIO 搭建简单的 web 服务器    
+### Lesson 1 - 搭建简单的 web 服务器    
 ##### 第一步、在 oncedoc 目录下找到 onceio 文件夹，复制到项目文件夹中。  
 
 onceio 在 oncedoc 中路径如下图所示：  

@@ -1,120 +1,99 @@
 # OnceAcademy
-### Lesson3 - OnceIO 中三种主要的表单数据传送方法（GET、POST、GET 与 POST 同时使用）    
-##### 一、GET  
+### Lesson 3 - 使用中间件（middleware）
+OnceIO 是一个自身功能极简，完全由路由和中间件构成的 web 开发框架：一个 OnceIO 应用本质上就是在调用各种中间件。  
+  
+中间件是一个函数，它可以访问请求对象（request object (req)）, 响应对象（response object (res)）和应用的请求-响应循环中下一个中间件。  
+  
+中间件的功能包括：  
+  
+* 执行任何代码。  
+* 修改请求和响应对象。  
+* 终结请求-响应循环。
+* 调用堆栈中的下一个中间件。  
 
-在项目文件夹中创建服务器文件 websvr.js 和网页文件 form.html.  
+如果当前中间件没有终结请求-响应循环，则必须调用 req.filter.next() 将控制权交给下一个中间件，否则请求就会挂起。  
+  
+下面我们将以 Lesson 1 中简单的 'Hello World' 应用为例，为其增加两个中间件：会在 console 输出一条简单消息的 myLogger 和会在网页上显示 HTTP 请求的时间戳的 requestTime.  
 
-websvr.js 的代码如下：  
+    var onceio = require('../onceio/onceio')
+    var app = onceio()
+
+
+    app.get('/', function(req, res) {
+      res.end('Hello World!')
+    })
+
+##### 中间件函数 myLogger  
+
+myLogger 函数会在 request 经过它时在 console 界面输出“LOGGED”。myLogger 函数的代码如下：  
+
+    var myLogger = function(req, res) {
+      console.log('LOGGED')
+      req.filter.next()
+    }  
+
+把 myLogger 添加到应用中：  
     
     var onceio = require('../onceio/onceio')
+    var app = onceio()
 
-    var app = onceio({
-        home   :  "./"
-      , port   :  8054
-      , listDir:  true
-      , debug  :  false
-    })
 
-    app.get('/form', function(req, res) {
-      res.render('form.html')
-    })
+    var myLogger = function(req, res) {
+      console.log('LOGGED')
+      req.filter.next()
+    }
 
-    //Handling form-data sent through the GET method
-    app.get('/form/get_form.asp', function(req, res) {
-      res.write('Received the form-data:\n')
-      res.send('req.query: ' + JSON.stringify(req.query))
+    app.use(myLogger)
+
+    app.get('/', function(req, res) {
+      res.end('Hello World!')
     })  
 
-form.html 的代码如下：  
+每当应用收到请求时，它都会在终端输出“LOGGED”：  
+
+![myLogger console效果][1]    
+
+中间件的加载顺序很重要：中间件必须要被首先加载并且被首先执行，否则在请求到达中间件之前请求-响应循环就被终止了，中间件将不被执行。  
+
+##### 中间件函数 requestTime
+接下来，我们创建一个叫做 requestTime 的中间件函数：  
+
+    var requestTime = function(req, res) {
+      req.requestTime = Date.now()
+      req.filter.next()
+    }  
+
+把 requestTime 添加到应用中：  
     
-    <!DOCTYPE html>
-    <body>
-      <p>Form that sends data through the GET method:</p>
-      <form action="/form/get_form.asp" method="get">
-        <p>Parameter 1: <input type="text" name="param1" value="GET1" /></p>
-        <p>Parameter 2: <input type="text" name="param2" value="GET2" /></p>
-        <input type="submit" value="Submit" />
-      </form>
-    </body>
-    </html> 
+    var onceio = require('../onceio/onceio')
+    var app = onceio()
 
-运行服务器，在浏览器中打开 localhost:8054/form，得到以下结果：  
 
-![GET浏览器效果][1]    
+    var requestTime = function(req, res) {
+      req.requestTime = Date.now()
+      req.filter.next()
+    }
 
-点击提交后，浏览器显示出服务器收到的包含在 req.query 中的表单数据，地址栏中的 URL 也显示了表单中所有参数的名称和值：  
+    app.use(requestTime)
 
-![GET提交浏览器效果][2] 
-
-##### 二、POST  
-
-将 websvr.js 文件中的 app.get('/form/get_form.asp', function(req, res)) 函数替换为：  
-
-    //Handling form-data sent through the POST method
-    app.post('/form/post_form.asp', function(req, res) {
-      res.write('Received the form-data:\n')
-      res.send('req.body: ' + JSON.stringify(req.body))
+    app.get('/', function(req, res) {
+      var responseText = 'Hello World!<br>';
+      responseText += '<small>Requested at: ' + req.requestTime + '</small>';
+      res.send(responseText);
     })  
-    
 
-将 form.html 文件中 body 里的内容替换为：  
+每当应用收到请求时，它都会在浏览器显示请求的时间戳：  
 
-    <p>Form that sends data through the POST method:</p>
-    <form action="/form/post_form.asp" method="post">
-      <p>Parameter 1: <input type="text" name="param1" value="POST1" /></p>
-      <p>Parameter 2: <input type="text" name="param2" value="POST2" /></p>
-      <input type="submit" value="Submit" />
-    </form> 
-
-重启服务器，在浏览器中打开 localhost:8054/form，得到以下结果：  
-
-![POST浏览器效果][3]    
-
-点击提交后，浏览器显示出服务器收到的包含在 req.body 中的表单数据，而地址栏不显示任何表单数据：  
-
-![POST提交浏览器效果][4]
+![requestTime 浏览器效果][2]  
   
-##### 三、GET 与 POST 同时使用
-
-将 websvr.js 文件中的 app.post('/form/post_form.asp', function(req, res)) 函数替换为：  
-
-    //Handling form-data sent through the GET method and the POST method
-    app.url('/form/get_and_post_form.asp/:routeParam', function(req, res) {
-      res.write('Received the form-data:\n')
-      res.write('req.params: ' + JSON.stringify(req.params) + '\n')
-      res.write('req.query: ' + JSON.stringify(req.query) + '\n')
-      res.send('req.body: ' + JSON.stringify(req.body))
-    }, 'qs')  
-    
-为减少 IO，app.url() 默认不加载 req.body，如需加载，需要把它的第三个参数设置为 'qs' 或 {POST : 'qs'}. app.url() 的第三个参数还有其它设置方法，我们会在之后的课程中进一步说明。  
-
-将 form.html 文件中 body 里的内容替换为：  
-
-    <p>Form that sends data through the GET method and the POST method:</p>
-    <form action="/form/get_and_post_form.asp/ROUTE/?getParam=GET" method="post">
-      <p>POST Parameter 1: <input type="text" name="postParam1" value="POST1" /></p>
-      <p>POST Parameter 2: <input type="text" name="postParam2" value="POST2" /></p>
-      <input type="submit" value="Submit" />
-    </form> 
-
-这个表单同时使用了三种传送数据的方法：在表单的 action 属性中以 '/' 分隔开 URL 参数将其传送到 req.params 中；在表单的 action 属性中以 '?' 标示 URL 参数将其传送到 req.query 中；用 POST 方式将表单内的输入项传送到 req.body 中。 
-  
-重启服务器，在浏览器中打开 localhost:8054/form，得到以下结果：  
-
-![GET&POST浏览器效果][5]    
-
-点击提交后，页面显示出服务器收到的分别包含在 req.params，req.query 和 req.body 中的表单数据，而地址栏中的 URL 只显示了 req.params 和 req.query 中的数据：  
-
-![GET&POST提交浏览器效果][6]
+中间件能访问请求对象、响应对象、堆栈中下一个中间件和整个 OnceIO API，因此它的用法拥有无限的可能性。 
 
 
 
 
 
 
-  [1]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson3/get_form.png
-  [2]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson3/get_form_submit.png
-  [3]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson3/post_form.png
-  [4]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson3/post_form_submit.png
-  [5]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson3/get_and_post_form.png
-  [6]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson3/get_and_post_form_submit.png
+
+
+  [1]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson3/myLogger_console.png
+  [2]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson3/requestTime_browser.png

@@ -1,32 +1,21 @@
 var onceio = require('../onceio/onceio')
+var app = onceio()
 
-var app = onceio({
-    home   :  "./"
-  , port   :  8054
-  , listDir:  true
-  , debug  :  false
-})
 
-app.get('/form', function(req, res) {
-  res.render('form.html')
-})
+var myLogger = function(req, res) {
+  console.log('LOGGED')
+  req.filter.next()
+}
+var requestTime = function(req, res) {
+  req.requestTime = Date.now()
+  req.filter.next()
+}
 
-//Handling form-data sent through the GET method
-app.get('/form/get_form.asp', function(req, res) {
-  res.write('Received the form-data:\n')
-  res.send('req.query: ' + JSON.stringify(req.query))
-})
+app.use(myLogger)
+app.use(requestTime)
 
-//Handling form-data sent through the POST method
-app.post('/form/post_form.asp', function(req, res) {
-  res.write('Received the form-data:\n')
-  res.send('req.body: ' + JSON.stringify(req.body))
-})
-
-//Handling form-data sent through the GET method and the POST method
-app.url('/form/get_and_post_form.asp/:routeParam', function(req, res) {
-  res.write('Received the form-data:\n')
-  res.write('req.params: ' + JSON.stringify(req.params) + '\n')
-  res.write('req.query: ' + JSON.stringify(req.query) + '\n')
-  res.send('req.body: ' + JSON.stringify(req.body))
-}, 'qs')
+app.get('/', function(req, res) {
+  var responseText = 'Hello World!<br>';
+  responseText += '<small>Requested at: ' + req.requestTime + '</small>';
+  res.send(responseText);
+}) 
