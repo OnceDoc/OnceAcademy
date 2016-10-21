@@ -29,16 +29,19 @@ Git Bash 界面如下：
     })  
     
 
-OnceIO 的模板引擎接口与 Express 有一些不同，例如，在使用 pug 或 ETS 时，Express 中 require 函数的第一个参数为路径，而 OnceIO 中则为内容：  
+定义模板引擎可用的变量时，除了可以使用 res.render() 函数，还可以在中间件中使用 res.model 对象，例如上面代码中的 app.get('/dot', function(req, res)) 可以等价地改写为：  
 
-    //Comparison between Express and OnceIO when using pug
-    require('pug').__express(path, option)
-    require('pug').render(content, option)
+    app.use('/dot', function(req, res) {
+      res.model.username = 'Kris'
+      req.filter.next()
+    })
 
-    // Comparison between Express and OnceIO when using EJS
-    require('ejs').__express(path, option)
-    require('ejs').render(content, option)
+    app.get('/dot', function(req, res) {
+      res.render('dot.tmpl')
+    })
 
+上面代码中定义的 username 变量只可以在 'localhost:8054/dot' 路径下使用，如果要在 localhost:8054 的其他路径中也使用这个变量，需把 app.use('/dot', function(req, res)) 的第一个参数改为 '/'.  
+  
 创建好服务器文件后，再在项目文件夹中创建一个模板文件 dot.tmpl，代码如下：  
 
     <!DOCTYPE html>
@@ -48,9 +51,10 @@ OnceIO 的模板引擎接口与 Express 有一些不同，例如，在使用 pug
     </html>  
 
 运行服务器，在浏览器中打开 localhost:8054/dot，得到以下结果：  
+  
 ![浏览器效果][2]  
   
-可以注意到，这个网页和 Lesson1 中的示例网页不同，它的内容是由前端文件和后端文件共同决定的，这就是使用了模板引擎的结果。
+可以注意到，这个网页和 Lesson1 中的示例网页不同，它的内容是由前端文件和后端文件共同决定的，这就是使用了模板引擎的结果。  
   
 ##### 三、更换模板引擎
 
@@ -60,13 +64,22 @@ OnceIO 支持所有 Node.js 模板引擎，您可以根据自己的需要或喜�
 
     app.engine('ejs', require('ejs').render)
 
-    //example_ejs.ejs 是根据 EJS 格式要求修改原模板文件得到的新模板文件
     app.get('example_ejs', function(req, res) {
       res.render('example_ejs.ejs', {
           username: 'Kris'
       })
     })
   
+OnceIO 的模板引擎接口与 Express 有一些不同：在使用 EJS 或 pug 时，Express 中 require 函数的第一个参数为路径，而 OnceIO 中则为内容：  
+
+    // Comparison between Express and OnceIO when using EJS
+    require('ejs').__express(path, option)
+    require('ejs').render(content, option)
+
+    //Comparison between Express and OnceIO when using pug
+    require('pug').__express(path, option)
+    require('pug').render(content, option)
+
 模板文件 example_ejs.ejs 的代码为：  
   
     <!DOCTYPE html>
@@ -79,7 +92,6 @@ OnceIO 支持所有 Node.js 模板引擎，您可以根据自己的需要或喜�
 
     app.engine('pug', require('pug').render);
 
-    //example_pug.pug 是根据 pug 格式要求修改原模板文件得到的新模板文件
     app.get('/example_pug', function(req, res) {
       res.render('example_pug.pug', {
           username: 'Kris'
