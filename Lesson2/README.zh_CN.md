@@ -1,15 +1,15 @@
 # OnceAcademy
 ### Lesson 2 - 使用中间件（middleware）
 
-OnceIO 是一个自身功能极简，完全由路由和中间件构成的 web 开发框架：一个 OnceIO 应用本质上就是在调用各种中间件。  
+OnceIO 是一个自身功能极简，完全由路由和中间件构成的 web 开发框架：一个 OnceIO 应用本质上就是在调用各种中间件和Handler。  
   
-中间件是一个函数，它可以访问请求对象（request object (req)）, 响应对象（response object (res)）和应用的请求-响应循环中下一个中间件。  
+中间件是一个函数，它可以访问请求对象（request object (req)）, 响应对象（response object (res)），并将应用的请求-响应循环传向下一个中间件。
   
 一个应用的请求-响应循环如下图所示，由请求对象、响应对象、中间件和 handler 构成：  
   
 ![请求-响应循环][1]  
 
-Handler 针对请求发出响应，循环终结于此，一个请求-响应循环只能有一个 handler；每个请求在到达 handler 之前都会依次经过中间件处理，一个请求-响应循环可以没有也可以有多个中间件.
+Handler 针对请求发出响应，循环终结于此，一个请求-响应循环只会由一个 handler处理；但每个请求在到达 handler 之前会依次经过许多中间件，NoceJS中的MiddlerWare与Java中的Filter和.NET中的HttpModule概念类似。一个请求-响应循环也可以不经过中间件，比如说静态文件就没有执行解析Session、登录认证中间件的必要。
   
 中间件的功能包括：  
   
@@ -107,7 +107,7 @@ myLogger 函数会在 request 经过它时在 console 界面输出“LOGGED”�
 
     }, { session: true })
 
-其中第一个参数指定所有在以“/file”开头的 URL 中发起的请求都会经过这个中间件；第三个参数指定这个中间件能对 session 进行操作。  
+其中第一个参数指定所有以“/file”开头的 URL（发起的请求）都会经过这个中间件；第三个参数指定这个中间件需要session支持。因为onceio的session对象可能是存放在数据库中的，从数据库获取session会有一定的性能损失，所以在设计时您可根据情况，比如说在用户界面、管理后台添加session解析支持。 
 
 中间件能访问请求对象、响应对象、堆栈中下一个中间件和整个 OnceIO API，因此它的用法拥有无限的可能性。 
 
