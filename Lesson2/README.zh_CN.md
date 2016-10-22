@@ -1,7 +1,7 @@
 # OnceAcademy
 ### Lesson 2 - 使用中间件（middleware）
 
-OnceIO 是一个自身功能极简，完全由路由和中间件构成的 web 开发框架：一个 OnceIO 应用本质上就是在调用各种中间件和Handler。  
+OnceIO 是一个自身功能极简，完全由路由、中间件和Handler构成的 web 开发框架：一个 OnceIO 应用本质上就是在调用各种中间件和Handler。  
   
 中间件是一个函数，它可以访问请求对象（request object (req)）, 响应对象（response object (res)），并将应用的请求-响应循环传向下一个中间件。
   
