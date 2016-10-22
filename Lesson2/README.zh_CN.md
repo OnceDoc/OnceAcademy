@@ -9,7 +9,7 @@ OnceIO 是一个自身功能极简，完全由路由、中间件和Handler构成
   
 ![请求-响应循环][1]  
 
-Handler 针对请求发出响应，循环终结于此，一个请求-响应循环只会由一个 handler处理；但每个请求在到达 handler 之前会依次经过许多中间件，如Session、Securty、表单解析等都是典型的中间件，NoceJS中的MiddlerWare与Java中的Filter和.NET中的HttpModule概念类似。一个请求-响应循环也可以不经过中间件，比如说静态CSS/JS文件就没有执行Session、认证中间件的必要。
+Handler 针对请求发出响应，循环终结于此，一个请求-响应循环只会由一个 handler处理；但每个请求在到达 handler 之前会依次经过许多中间件，如Session、Securty(登录认证)、表单解析等都是典型的中间件，NoceJS中的MiddlerWare与Java中的Filter和.NET中的HttpModule概念类似。一个请求-响应循环也可以不经过中间件，比如说静态CSS/JS文件就没有执行Session、认证中间件的必要。
   
 中间件的功能包括：  
   
