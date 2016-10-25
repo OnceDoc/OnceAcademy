@@ -10,10 +10,13 @@ app.use(function(req, res) {
   req.filter.next()
 })
 
-app.get('/', function(req, res) {
-  res.render('model.html', { 
-    username: 'Rex' 
-  })
+app.get('/view', function(req, res) { 
+  var userModel = { username: 'Rex' }
+  res.render('model.html', userModel)
 })
 
+app.get('/view/user/:username', function(req, res) { 
+  var userModel = { username: req.params.username }
+  res.render('model.html', userModel)
+})
 

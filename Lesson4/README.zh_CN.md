@@ -21,24 +21,46 @@ Model 可以在 app 级别使用，成为在应用的整个生命期间都有效
       req.filter.next()
     })
 
-    app.get('/', function(req, res) {
-      res.render('model.html', { 
-        username: 'Rex' 
-      })
+    app.get('/view', function(req, res) { 
+      var userModel = { username: 'Rex' }
+      res.render('model.html', userModel)
     })
 
-在全局 model 和本地 model 同时存在时，两者会自动 merge，如果有重复的属性，本地 model 中的属性会覆盖全局 model 中的。例如，当以上代码在服务器文件中同时存在时，在 '/' 路径下，各属性的值为：  
+在全局 model 和本地 model 同时存在时，两者会自动合并，如果其中有重复的属性，本地 model 中的属性会覆盖全局 model 中的。例如，当上面所有代码在服务器文件中同时存在时，userModel 会与 res.model 合并并且覆盖 res.model 中的 username 属性。然后两者合并产生的 model
+会与 app.model 合并并且覆盖其中的 debug 属性。最后在 '/view' 路径下，各属性的值为：  
   
-![浏览器显示效果][2]
+![模型 merge 浏览器显示效果][2]
 
 ##### 视图（View）  
 
-视图用于有目的地显示数据，对应项目文件夹中的网页文件，例如 Lesson 4 文件夹中的 model.html.
+视图用于有目的地显示数据，对应项目文件夹中的网页文件，例如 Lesson 4 文件夹中的 model.html.  
+  
+模板引擎能够将规定格式的模板代码转换为业务数据，因此我们可以使用模板引擎通过模型来改变视图。例如在下面的代码中，模型中 title、debug 和 username 属性的值会影响视图的显示内容。
+
+    <!DOCTYPE html>
+    <body>
+      <h1> Title: {{=it.title}} </h1>
+      <h1> Debug: {{=it.debug}} </h1>
+      <h1> Username: {{=it.username}} </h1>
+    </body>
+    </html>
   
 ##### 控制器（Controller）
 
 控制器用于控制应用程序的流程，处理事件并作出响应。它对应项目文件夹中的服务器文件，例如 Lesson 4 文件夹中的 websvr.js.
 
+我们可以通过控制器对模型进行操作，例如在以下代码中，控制器将 URL 参数赋值给模型 userModel 的属性 username，使用户能通过改变输入的地址来改变模型，进而改变视图：
+
+    app.get('/view/user/:username', function(req, res) { 
+      var userModel = { username: req.params.username }
+      res.render('model.html', userModel)
+    })
+
+代码实现效果如下图：
+
+![控制器示例效果 1][3]  
+  
+![控制器示例效果 2][4]
 
 
 
@@ -46,4 +68,5 @@ Model 可以在 app 级别使用，成为在应用的整个生命期间都有效
 
   [1]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson4/MVC_process.png
   [2]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson4/model_overwritten.png
-  
+  [3]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson4/controller_example_1.png
+  [4]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Lesson4/controller_example_2.png
