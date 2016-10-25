@@ -21,7 +21,7 @@
 
 模型用于封装与应用程序的业务逻辑相关的数据，在跟其他NodeJS框架一样，OnceIO采用JavaScript原生对象JSON来表示model。  
   
-Model 可以在 app 级别使用，成为在应用的整个生命期间都有效的全局变量，例如：   
+Model 可以在应用级别使用，成为在应用的整个生命期间都有效的全局变量，例如：
 
     app.model({ title: 'test_page', debug: true }) 
 
@@ -38,8 +38,7 @@ Model 可以在 app 级别使用，成为在应用的整个生命期间都有效
       res.render('model.html', userModel)
     })
 
-在全局 model 和本地 model 同时存在时，两者会自动合并，如果其中有重复的属性，handler中 的 model 会覆盖 middleware 中的 model， 本地 model 中的属性会覆盖全局 model 中的。例如，当上面所有代码在服务器文件中同时存在时，userModel 会与 res.model 合并并且覆盖 res.model 中的 username 属性。然后两者合并产生的 model
-会与 app.model 合并并且覆盖其中的 debug 属性。最后在 '/view' 路径下，各属性的值为：  
+在全局 model 和本地 model 同时存在时，两者会自动合并，如果其中有重复的属性，handler 中的 model 会覆盖 middleware 中的 model， 本地 model 中的属性会覆盖全局 model 中的。例如，当上面所有代码在服务器文件中同时存在时，userModel 会与 res.model 合并并且覆盖 res.model 中的 username 属性。然后两者合并产生的 model 会与 app.model 合并并且覆盖其中的 debug 属性。最后在 '/view' 路径下，各属性的值为：  
   
 ![模型 merge 浏览器显示效果][2]
 
