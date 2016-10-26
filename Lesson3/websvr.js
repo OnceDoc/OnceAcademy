@@ -27,7 +27,7 @@ app.get('/dot', function(req, res) {
 
 
 // Using pug template engine
-app.engine('pug', require('pug').render);
+app.engine('pug', require('pug').render)
 
 app.get('/example_pug', function(req, res) {
   res.render('example_pug.pug', {

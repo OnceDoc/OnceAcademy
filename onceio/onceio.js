@@ -617,30 +617,48 @@ var OnceIO = module.exports = function(options) {
     */
     parseUrl: function(expression, reqUrl) {
       //Remove the params in querystring
-      var idx = reqUrl.indexOf('?');
+      var self  = this;
+      var idx   = reqUrl.indexOf('?');
       idx > 0 && (reqUrl = reqUrl.substr(0, idx));
 
-      var parts   = expression.split('/')
-      var start   = expression.charAt(0) === '/' ? 0 : 1
-      var urls    = reqUrl.split('/')
-      var params  = {}
+      var parts   = expression.split('/');
+      var urls    = reqUrl.split('/');
+      var isLoose = self.mode == 'loose'
 
-      for (var i = 0, l = parts.length; i < l; i++) {
-        var part  = parts[i]
-        var param = urls[i + start]
 
-        if (part.charAt(0) === ':') {
-          var paramName = part.substr(1);
+      var start   = expression.charAt(0) === '/' ? 0 : 1;
+      var params  = {};
+      //match the begining of the url or the whole url
+      var maxLen  = parts.length > urls.length ? parts.length : urls.length;
+      var len     = isLoose ? parts.length : maxLen;
 
-          if (part.charAt(part.length - 1) === '$') {
-            paramName = paramName.substr(0, paramName.length - 1)
-            param = urls.slice(i + start, urls.length).join('/')
+      //console.log(expression, self.mode, reqUrl, parts, urls, len)
+
+      for (var i = 0; i < len; i++) {
+        var part  = parts[i];
+        var param = urls[i + start];
+
+        if (part && part.charAt(0) === ':') {
+          var paramName   = part.substr(1);
+          /*
+          $ means match to the end of the url and it will irgnore the rest
+          /file/view/:fileUrl$
+          */
+          var isWholeMatch  = part.charAt(part.length - 1) === '$';
+
+          if (isWholeMatch) {
+            paramName = paramName.substr(0, paramName.length - 1);
+            param = urls.slice(i + start, urls.length).join('/');
           }
 
           try {
             params[paramName] = decodeURIComponent(param || '');
           } catch(err) {
             params[paramName] = param;
+          }
+
+          if (isWholeMatch) {
+            return params;
           }
         } else if (part != param) {
           return false;
@@ -656,7 +674,7 @@ var OnceIO = module.exports = function(options) {
     session:  boolean
     file:     boolean
     parse:    boolean
-    */ 
+    */
     extend: function(options) {
       for(var key in options) {
         this[key] = options[key]
@@ -989,7 +1007,7 @@ var OnceIO = module.exports = function(options) {
     var includeBeginLen = 14
     var includeAfterLen = 4
 
-    var defaultModel  = null
+    var defaultModel    = {}
 
     /*
     get a file
@@ -1039,37 +1057,6 @@ var OnceIO = module.exports = function(options) {
 
       cb && cb (tmpl)
       return tmpl
-    };
-
-    /*
-    begin with '/' e.g "path.tmpl", find the file from system web folder or find from module folder
-    */
-    var getModule = function(tmplUrl, resHome) {
-      var homeDir
-      if (tmplUrl.charAt(0) == '/') {
-        var tmpStr  = tmplUrl.substr(1);
-        var tmpIdx  = tmpStr.indexOf('/');
-        //If the begin with regiested modules, then
-        var modName = tmpIdx > -1
-          ? modName = tmpStr.substr(0, tmpIdx)
-          : modName = tmpStr;
-
-        var modHome = MODULES[modName];
-        if (modHome) {
-          homeDir = modHome;
-          tmplUrl = tmpIdx > -1 ? tmpStr.substr(tmpIdx) : '.';
-
-          return {
-              home: modHome
-            , file: tmplUrl
-          }
-        }
-      }
-
-      return {
-          home: resHome || Settings.home
-        , file: tmplUrl
-      }
     };
 
     /*
@@ -1131,11 +1118,7 @@ var OnceIO = module.exports = function(options) {
           /*
           merge model
           */
-          var model = defaultModel
-            ? Object.create(defaultModel)
-            : {}
-            ;
-
+          var model = Object.create(defaultModel);
           _.extend(model, res.model);
           _.extend(model, _model);
 
@@ -1178,8 +1161,13 @@ var OnceIO = module.exports = function(options) {
           if (isRawTmpl) {
             getInclude(tmplUrl, render, res.home);
           } else {
-            var module    = getModule(tmplUrl, res.home);
-            var tmplPath  = path.join(module.home, module.file)
+            var tmplPath
+            var module = getModule(tmplUrl);
+            if (module) {
+              tmplPath = path.join(module.home, module.file);
+            } else {
+              tmplPath = path.join(res.home || Settings.home, tmplUrl);
+            }
             getFile(tmplPath, render, res.home);
           }
         }
@@ -1209,25 +1197,33 @@ var OnceIO = module.exports = function(options) {
           return self.engines[extname || ''] || self.engines['']
         }
       , model: function(_model) {
-          defaultModel = _model;
+          _.extend(defaultModel, _model);
         }
       , clear: function() {
           for (var tmpl in tmplCachePool) {
-            delete tmplCachePool[tmpl]
+            delete tmplCachePool[tmpl];
           }
 
           for (var file in fileCachePool) {
-            delete fileCachePool[file]
+            delete fileCachePool[file];
+          }
+
+          var preloadList = Template.preloadList;
+          for (var i = 0; i < preloadList.length; i++) {
+            var preloadArgs = preloadList[i];
+            Template.preloadModule.apply(this, preloadArgs);
           }
         }
-      , preload: function(dirname, extname) {
+      , preloadList: []
+      , preloadModule: function(dirname, extname) {
           var module  = getModule(dirname);
+          var home    = module ? module.home : path.join(Settings.home, dirname);
 
-          console.log('Preload', module.home, extname);
+          console.log('Preload', home, extname);
 
-          fs.readdir(module.home, function(err, files) {
+          fs.readdir(home, function(err, files) {
             if (err) {
-              console.error(err, module.home);
+              console.error(err, home);
               return
             }
 
@@ -1235,11 +1231,15 @@ var OnceIO = module.exports = function(options) {
               var fileName  = files[i];
               var extIdx   = fileName.indexOf(extname);
               if (extIdx === (fileName.length - extname.length) && extIdx > 0) {
-                getFile(path.join(module.home, fileName), null, module.home);
+                getFile(path.join(home, fileName), null, home);
               }
             }
           })
-
+        }
+      , preload: function(dirname, extname) {
+          var preloadArgs = Array.prototype.slice.call(arguments)
+          Template.preloadList.push(preloadArgs);
+          Template.preloadModule.apply(this, preloadArgs);
         }
       , tmplCachePool: tmplCachePool
     }
@@ -1501,6 +1501,56 @@ var OnceIO = module.exports = function(options) {
     return false;
   }
 
+  var STATICS = [];
+
+  var isStatic = function(req) {
+    var reqUrl = req.url;
+
+    for (var i = 0, l = STATICS.length; i < l; i++) {
+      var staticFolder    = STATICS[i];
+      var wildcardIdx     = staticFolder.indexOf('*')
+      var startPos        = staticFolder.charAt(0) == '/' ? 0 : 1
+
+      if (wildcardIdx < 0) {
+        var pos = reqUrl.indexOf(staticFolder);
+        if (startPos == pos) {
+          return true;
+        }
+      } else {
+        var urlPos = startPos;
+
+        for (var j = 0, m = staticFolder.length; j < m; j++) {
+          var curChar = staticFolder.charAt(j);
+          var urlChar = reqUrl.charAt(urlPos);
+
+          if (curChar == '*') {
+            while (urlChar && urlChar != '/') {
+              urlPos++;
+              urlChar = reqUrl.charAt(urlPos)
+            }
+          } else if (curChar != urlChar) {
+            break;
+          } else {
+            urlPos++;
+          }
+        }
+
+        if (j == m) {
+          return true
+        }
+      }
+    }
+
+    return false
+  }
+
+  self.static = function(prefixUrl) {
+    if (STATICS.indexOf(prefixUrl) < 0) {
+      STATICS.push(prefixUrl)
+    }
+  };
+
+
   /*
   send sth
   send(304)
@@ -1562,6 +1612,26 @@ var OnceIO = module.exports = function(options) {
     //params in the matched url
     req.params  = {};
     req.cached  = isCached;
+
+
+    /*
+    handle module
+    */
+    var module = getModule(req.url);
+    if (module) {
+      res.home    = module.home;
+      res.prefix  = module.name;
+    }
+
+    /*
+    handle static files
+    */
+    if (isStatic(req)) {
+      console.log('Static', req.url);
+      fileHandler(req, res);
+      return
+    }
+
 
     //initial httprequest
     var filterChain = new FilterChain(function() {
@@ -1656,19 +1726,51 @@ var OnceIO = module.exports = function(options) {
   //模块汇总
   var MODULES = {};
 
-  //module/ addon redirect
-  self.mod = function(prefix, home) {
-    if (MODULES[prefix]) {
-      console.error('module already registered, it will be override', prefix, home)
+  /*
+  begin with '/' e.g "path.tmpl", find the file from system web folder or find from module folder
+  */
+  var getModule = function(url) {
+    var homeDir
+    var modStr  = url
+
+    if (modStr.charAt(0) == '/') {
+      modStr    = modStr.substr(1);
     }
 
-    MODULES[prefix] = home;
+    var tmpIdx = modStr.indexOf('?');
+    if (tmpIdx > -1) {
+      modStr = modStr.substr(0, tmpIdx);
+    }
 
-    self.filter(prefix, function(req, res) {
-      res.prefix  = prefix;
-      res.home    = home;
-      req.filter.next();
-    });
+    var modIdx  = modStr.indexOf('/');
+    //If the begin with regiested modules, then
+    var modName = modIdx > -1
+      ? modName = modStr.substr(0, modIdx)
+      : modName = modStr;
+
+    var modHome = MODULES[modName];
+
+    if (modHome) {
+      return {
+          name: modName
+        , home: modHome
+        , file: modStr.substr(modIdx)
+      }
+    }
+  };
+
+  //module/ addon redirect
+  self.mod = function(name, home) {
+    if (name.charAt(0) == '/') {
+      name = name.substr(1)
+      console.log('Module renamed to ', name);
+    }
+
+    if (MODULES[name]) {
+      console.error('Module already registered, it will be override', name, home)
+    }
+
+    MODULES[name] = home;
   };
 
   self.running = false;

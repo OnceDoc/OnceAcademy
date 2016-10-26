@@ -20,7 +20,7 @@ Handler 针对请求发出响应，循环终结于此，一个请求-响应循�
 
 如果当前中间件没有终结请求-响应循环，则必须调用 req.filter.next() 将控制权交给下一个中间件，否则请求就会挂起。  
   
-下面我们将以 Lesson 1 中简单的 'Hello World' 应用为例，为其增加两个中间件：能在终端输出一条简单消息的 myLogger 和能在网页上显示 HTTP 请求的时间戳的 requestTime.  
+下面我们将以 Lesson 1 中简单的 'Hello World' 应用为例，为其增加两个中间件：能在终端输出一条简单消息的 myLogger 和能在网页上显示 HTTP 请求的时间戳的 requestTime。  
 
     var onceio = require('../onceio/onceio')
     var app = onceio()

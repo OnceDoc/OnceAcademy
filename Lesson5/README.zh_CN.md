@@ -1,8 +1,8 @@
 # OnceAcademy
 ### Lesson 5 - 三种主要的表单数据传送方法（GET、POST、GET 与 POST 同时使用）    
-##### GET  
+#### GET  
 
-在项目文件夹中创建服务器文件 websvr.js 和网页文件 form.html.  
+在项目文件夹中创建服务器文件 websvr.js 和网页文件 form.html。  
 
 websvr.js 的代码如下：  
     
@@ -46,7 +46,7 @@ form.html 的代码如下：
 
 ![GET 提交浏览器效果][2] 
 
-##### POST  
+#### POST  
 
 将 websvr.js 文件中的 app.get('/form/get_form.asp', function(req, res)) 函数替换为：  
 
@@ -74,7 +74,7 @@ form.html 的代码如下：
 
 ![POST 提交浏览器效果][4]
   
-##### GET 与 POST 同时使用
+#### GET 与 POST 同时使用
 
 将 websvr.js 文件中的 app.post('/form/post_form.asp', function(req, res)) 函数替换为：  
 
