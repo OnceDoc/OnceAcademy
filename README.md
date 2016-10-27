@@ -5,3 +5,4 @@
 ### Lesson 4 - MVC pattern   
 ### Lesson 5 - Three major methods of sending form-data (GET, POST, using GET and POST in one form)  
 ### Lesson 6 - Routing  
+### Lesson 7 - Cache
