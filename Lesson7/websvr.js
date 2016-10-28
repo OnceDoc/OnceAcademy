@@ -1,5 +1,7 @@
 var onceio = require('../onceio/onceio')
-var app = onceio()
+var app = onceio({
+	fileCacheSize: 1024 * 1024
+})
 
 // app.static('/')
 

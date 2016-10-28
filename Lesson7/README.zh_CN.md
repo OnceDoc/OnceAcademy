@@ -44,7 +44,7 @@
   
 ##### 客户端缓存生效的常见流程
 
-服务器收到请求时，在 200 OK 响应中回送该资源的 Last-Modified 和 ETag，客户端将该资源保存在缓存中，并记录这两个属性。当客户端再次发送相同的请求时，会在请求中携带 If-Modified-Since 和 If-None-Match 两个消息报头。两个报头的值分别是上次请求收到的响应中 Last-Modified 和 ETag 的值。服务器通过这两个头判断本地资源未发生变化，客户端不需要重新下载，返回 304 响应。常见流程如下图所示：  
+服务器收到请求时，在 200 OK 响应中回送该资源的 Last-Modified 和 ETag，客户端将该资源保存在缓存中，并记录这两个属性。当客户端再次发送相同的请求时，会在请求中携带 If-Modified-Since 和 If-None-Match 两个消息报头。两个报头的值分别是上次请求收到的响应中 Last-Modified 和 ETag 的值。服务器通过这两个头判断本地资源未发生变化，客户端不需要重新下载，返回 304 响应。示例流程如下：  
   
 ![客户端缓存生效常见流程][2]  
 
@@ -67,7 +67,7 @@
 
 ##### 将 css、js、图片等资源设置为 static 模式
 
-对于静态资源，比如 css文件、js文件、图片等，可以将这些资源放在专门的文件夹中，然后用 app.static('folder') 将文件夹设置为 static 模式，使其中的资源不参与中间件、Handler、会话、POST 和 Cookie，以达到节约带宽、减少延迟和降低服务器压力的目的。示例代码如下：
+对于静态资源，比如 css 文件、js 文件、图片等，可以将这些资源放在专门的文件夹中，然后用 app.static('folder') 将文件夹设置为 static 模式，使其中的资源不参与中间件、Handler、会话、POST 和 Cookie，以达到节约带宽、减少延迟和降低服务器压力的目的。示例代码如下：（app.static('/') 在此处仅作为示例使用，实际应用中，为避免本应执行的中间件、Handler 被跳过等问题，app.static() 的参数通常不会是根文件夹，而是专门存放静态资源的文件夹，如 '/css'、'/js'、'/img' 等）
 
     app.static('/')
 
@@ -80,7 +80,7 @@
       res.send('HANDLER')
     }
 
-运行服务器，在默认端口访问 localhost，浏览器显示 “Access forbidden!”，console窗口效果如下：  
+运行服务器，在默认端口访问 localhost，浏览器显示 “Access forbidden!”，console 窗口效果如下：  
   
 ![设置 static 时 console 窗口效果][3]
   
@@ -90,7 +90,7 @@
   
 ##### res.cache(0)
 
-可以通过 res.cache(0) 强制禁用客户端缓存，示例代码如下：
+可以用 res.cache(0) 强制禁用客户端缓存，示例代码如下：
 
     app.use(function(req, res) {
       res.cache(0)
@@ -111,7 +111,31 @@
   
 ![不使用 res.cache(0) 时 Network 栏效果][5]
   
-此时浏览器直接从本地缓存中获取资源。
+此时浏览器直接从本地缓存中获取资源。  
+
+##### 服务器内存缓存机制
+
+OnceIO 内置服务器内存缓存机制，让服务器内存充当类似缓存的角色，这个机制可以在定义应用程序时启用，示例代码如下：  
+
+    var app = onceio({
+      fileCacheSize: 1024 * 1024
+    })
+
+fileCacheSize 的单位是 Byte，1024 * 1024 代表 1 MB。  
+  
+服务器内存缓存机制启用后，当一个路径第一次被访问时，OnceIO 会自动将响应中体积小于 fileCacheSize 的文件存入内存并用 gzip 将这些文件逐个压缩打包再存一份。fileCacheSize 的值建议设为 1~2 MB。如果它的值太大，OnceIO 的内存将被大量占用且压缩过程将会耗费很多时间。当路径再次被访问时，服务器便可直接发送 OnceIO 内存中的文件而无需再次从硬盘中获取，此时是否发送压缩包版本则是根据用户端浏览器对 gzip 的支持情况决定的。  
+  
+不使用服务器内存缓存机制时没有本地缓存的客户端访问某个被访问过的路径时浏览器 Network 栏效果如下：  
+
+![不使用服务器内存缓存机制时 Network 栏效果][7]
+  
+其它条件相同，使用服务器内存缓存机制时浏览器 Network 栏效果如下：  
+  
+![使用服务器内存缓存机制时 Network 栏效果][8]
+  
+
+  
+
 
 
 
@@ -119,5 +143,7 @@
 [2]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/cache_flow.png
 [3]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/static_console.png
 [4]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/no_static_console.png
-[5]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/browser_network.png
+[5]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/no_cache0_browser_network.png
 [6]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/cache0_browser_network.png
+[7]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/no_fileCacheSize_browser_network.png
+[8]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/fileCacheSize_set_browser_network.png
