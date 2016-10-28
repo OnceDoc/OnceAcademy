@@ -1,11 +1,6 @@
 var onceio = require('../onceio/onceio')
+var app = onceio()
 
-var app = onceio({
-    home   :  './'
-  , port   :  8054
-  , listDir:  true
-  , debug  :  false
-})
 
 app.get('/form', function(req, res) {
   res.render('form.html')

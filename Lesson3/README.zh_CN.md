@@ -77,7 +77,7 @@ OnceIO 的模板引擎接口与 Express 有一些不同：在使用 EJS 或 pug 
 
 当您想使用 pug 模板引擎时，可在项目文件夹中安装 pug 后将 websvr.js 中的 app.get() 部分替换成：   
 
-    app.engine('pug', require('pug').render);
+    app.engine('pug', require('pug').render)
 
     app.get('/example_pug', function(req, res) {
       res.render('example_pug.pug', {

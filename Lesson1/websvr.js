@@ -1,7 +1,7 @@
 //import WebSvr module
 var onceio = require('../onceio/onceio')
 
-//Start the WebSvr, running at current folder, default port is 8054, directory browser enabled;
+//Start the WebSvr, running at current folder, default port is 8054, directory browser enabled
 //Trying at: http://localhost:8054
 var app = onceio({
     home: './'

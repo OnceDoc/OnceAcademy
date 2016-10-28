@@ -11,9 +11,9 @@
 
 #### 浏览器的缓存机制  
 
-所有的缓存都有一套规则来帮助它们决定什么情况下使用缓存中的副本，什么情况下向源服务器再次发送请求。这些规则有的在协议中有定义（如 HTTP 协议 1.0 和 1.1），有的则是由缓存的管理员设置（如 DBA、浏览器的用户、代理服务器管理员或者应用开发者）。  
+所有的缓存都有一套规则来帮助它们决定什么情况下使用缓存中的副本，什么情况下向源服务器再次发送请求。这些规则有的在协议（如 HTTP 协议 1.0 和 1.1）中有定义，有的则是由缓存的管理员（如 DBA、浏览器的用户、代理服务器管理员或者应用开发者）设置。  
   
-对于浏览器端的缓存，这些规则是在 HTTP 协议头和 html 页面的 meta 标签中定义的。它们分别从**新鲜度**和**校验值**两个维度来决定浏览器是否可以直接使用缓存中的副本。  
+对于浏览器端的缓存，这些规则是在 HTTP 协议头和 html 页面的 meta 标签中定义的。它们从**新鲜度**和**校验值**两个维度来决定浏览器是否可以直接使用缓存中的副本。  
   
 **新鲜度（过期机制）**：也就是缓存副本有效期。一个缓存副本必须满足以下条件，浏览器才会认为它是有效的：  
   
@@ -42,6 +42,12 @@
   
 ![shader.css 文件的 HTTP 头信息][1]  
   
+##### 客户端缓存生效的常见流程
+
+服务器收到请求时，在 200 OK 响应中回送该资源的 Last-Modified 和 ETag，客户端将该资源保存在缓存中，并记录这两个属性。当客户端再次发送相同的请求时，会在请求中携带 If-Modified-Since 和 If-None-Match 两个消息报头。两个报头的值分别是上次请求收到的响应中 Last-Modified 和 ETag 的值。服务器通过这两个头判断本地资源未发生变化，客户端不需要重新下载，返回 304 响应。常见流程如下图所示：  
+  
+![客户端缓存生效常见流程][2]  
+
 ##### 用户操作行为与缓存  
 
 用户在使用浏览器的时的各种操作，如输入地址后回车，按F5刷新等，对缓存有可能会造成影响。  
@@ -57,13 +63,61 @@
   
 当用户在按 F5 进行刷新时，浏览器会忽略 Expires/Cache-Control 的设置，再次向服务器发送请求，而 Last-Modified/Etag 仍然是有效的，服务器会根据情况判断返回 304 还是 200 ；而当用户使用 Ctrl+F5 进行强制刷新的时候，所有的缓存机制都将失效，；浏览器将重新从服务器下载资源并返回 200。
 
-#### 在服务器端设置缓存机制
+#### 在服务器端设置缓存机制和管理缓存
 
-##### 将 css、js、图片等资源增设置为 static
+##### 将 css、js、图片等资源设置为 static 模式
 
-对于不经常修改的静态资源，比如 css，js，图片等，可以将其设置为 static。这样既能保证在静态资源不变的情况下，可以不重发请求或直接通过 304 避免重复下载，又能保证在资源有更新的版本时，只要通过给资源增加时间戳或者更换路径，就能让用户访问最新的资源。
+对于静态资源，比如 css文件、js文件、图片等，可以将这些资源放在专门的文件夹中，然后用 app.static('folder') 将文件夹设置为 static 模式，使其中的资源不参与中间件、Handler、会话、POST 和 Cookie，以达到节约带宽、减少延迟和降低服务器压力的目的。示例代码如下：
 
+    app.static('/')
+
+    app.use(function(req, res) {
+      console.log('MIDDLEWARE')
+      req.filter.next()
+    })
+
+    app.get('/', function(req, res) {
+      res.send('HANDLER')
+    }
+
+运行服务器，在默认端口访问 localhost，浏览器显示 “Access forbidden!”，console窗口效果如下：  
+  
+![设置 static 时 console 窗口效果][3]
+  
+如果去掉 app.static('/')，进行相同操作，浏览器显示 “HANDLER”，console 窗口效果如下：  
+  
+![不设置 static 时 console 窗口效果][4]
+  
+##### res.cache(0)
+
+可以通过 res.cache(0) 强制禁用客户端缓存，示例代码如下：
+
+    app.use(function(req, res) {
+      res.cache(0)
+      req.filter.next()
+    })
+
+    app.get('/img', function(req, res) {
+      res.render('img.html')
+    }) 
+
+运行服务器，访问 localhost:8054/img，打开浏览器开发者工具中的 Network 栏，地址栏回车，Network 显示：  
+  
+![使用 res.cache(0) 时 Network 栏效果][5]
+  
+此时浏览器与服务器之间进行了一次 IO，如果本地缓存存在，服务器发出 304 响应，浏览器从本地缓存中获取资源；如果本地缓存不存在，服务器发出 200 响应，浏览器从服务器获取资源。
+  
+去掉 res.cache(0)，进行相同操作，Network 显示：  
+  
+![不使用 res.cache(0) 时 Network 栏效果][5]
+  
+此时浏览器直接从本地缓存中获取资源。
 
 
 
 [1]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/HTTP_headers_of_shader_css.png
+[2]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/cache_flow.png
+[3]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/static_console.png
+[4]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/no_static_console.png
+[5]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/browser_network.png
+[6]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/cache0_browser_network.png

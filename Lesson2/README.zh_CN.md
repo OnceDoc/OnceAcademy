@@ -84,9 +84,9 @@ myLogger 函数会在 request 经过它时在 console 界面输出“LOGGED”�
     app.use(requestTime)
 
     app.get('/', function(req, res) {
-      var responseText = 'Hello World!<br>';
-      responseText += '<small>Requested at: ' + req.requestTime + '</small>';
-      res.send(responseText);
+      var responseText = 'Hello World!<br>'
+      responseText += '<small>Requested at: ' + req.requestTime + '</small>'
+      res.send(responseText)
     })  
 
 每当应用收到请求时，它都会在浏览器显示请求的时间戳：  

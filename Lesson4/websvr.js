@@ -1,6 +1,6 @@
 var onceio = require('../onceio/onceio')
-
 var app = onceio()
+
 
 app.model({ title: 'test_page', debug: true })
 

@@ -1190,6 +1190,10 @@ var OnceIO = module.exports = function(options) {
             return
           }
 
+          if (extname.charAt('0') == '.') {
+            extname = extname.substr(1)
+          }
+
           self.engines[extname] = _engineFunc;
         }
       , getEngine: function(extname) {

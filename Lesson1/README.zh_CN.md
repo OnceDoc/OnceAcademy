@@ -9,14 +9,14 @@ onceio 在 oncedoc 中路径如下图所示：
 
 websvr.js 代码如下：  
 
-    var onceio = require("../onceio/onceio");
+    var onceio = require("../onceio/onceio")
 
     var app = onceio({
       home: "./"
       , listDir: true
       , debug: true
       , sessionTimeout: 60 * 1000
-    });
+    })
     
     app.get("/", function(req, res) {
       res.end('Hello, world')
