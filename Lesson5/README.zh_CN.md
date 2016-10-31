@@ -1,6 +1,8 @@
 # OnceAcademy
 ### Lesson 5 - 三种主要的表单数据传送方法（GET、POST、GET 与 POST 同时使用）    
-#### GET  
+#### 获取GET中的QueryString数据。
+
+在互联网上, QueryString是地址的一部分, 其中包含着需要传给后台的数据，通常以?开始，以&号分割。在表单提交时，会默认以QueryString的形式向后台发送数据，OnceIO会将其存储在res.query对象上。
 
 在项目文件夹中创建服务器文件 websvr.js 和网页文件 form.html。  
 
@@ -46,7 +48,9 @@ form.html 的代码如下：
 
 ![GET 提交浏览器效果][2] 
 
-#### POST  
+#### 获取POST中的数据
+
+GET将数据放在地址中，而地址中存放的数据量是有限的。POST则将数据存储在Request Body中。OnceIO将Post接收的数据存放在req.body中。
 
 将 websvr.js 文件中的 app.get('/form/get_form.asp', function(req, res)) 函数替换为：  
 
@@ -57,7 +61,7 @@ form.html 的代码如下：
     })  
     
 
-将 form.html 文件中 body 里的内容替换为：  
+将 form.html 文件中 body 里的内容替换
 
     <p>Form that sends data through the POST method:</p>
     <form action="/form/post_form.asp" method="post">
@@ -74,9 +78,11 @@ form.html 的代码如下：
 
 ![POST 提交浏览器效果][4]
   
-#### GET 与 POST 同时使用
+#### 获取Router中的变量及GET/POST同时使用
 
-将 websvr.js 文件中的 app.post('/form/post_form.asp', function(req, res)) 函数替换为：  
+用户还可以将路由的一部分指定为变量，如 "/form/get_and_post_form.asp/:routeParam"。OnceIO会将routeParam变量的值存放在 req.params中。
+
+app.url接口可以让 GET 与 POST 同时使用。将 websvr.js 文件中的 app.post('/form/post_form.asp', function(req, res)) 函数替换为：  
 
     //Handling form-data sent through the GET method and the POST method
     app.url('/form/get_and_post_form.asp/:routeParam', function(req, res) {
