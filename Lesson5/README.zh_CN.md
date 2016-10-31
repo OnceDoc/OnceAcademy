@@ -2,7 +2,7 @@
 ### Lesson 5 - 三种主要的表单数据传送方法（GET、POST、GET 与 POST 同时使用）    
 #### 获取GET中的QueryString数据
 
-在互联网上, QueryString是地址的一部分, 其中包含着需要传给后台的数据，通常以?开始，以&号分割。在表单提交时，会默认以QueryString的形式向后台发送数据，OnceIO会将其存储在res.query对象上。
+在互联网上, QueryString是地址的一部分, 其中包含着需要传给后台的数据，通常以?开始，以&号分割。在表单提交时，会默认以QueryString的形式向后台发送数据，OnceIO会将其存储在req.query对象上。
 
 在项目文件夹中创建服务器文件 websvr.js 和网页文件 form.html。  
 
