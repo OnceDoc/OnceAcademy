@@ -73,8 +73,8 @@
 | res.redirect()                   | 重定向请求。                                        |
 | res.send(statusCode, text)       | 设置响应状态码（默认为 200）并在 text 为空时以响应主体形式发送其字符串表示。text 是选填参数，可以是 html 文件、json 变量等，以响应主体形式发送。                                                             |
 | res.send(json)                   | 发送 JSON 响应。                                    |
-| res.sendFile()                   | 以八位元流形式发送文件。                            |
-| res.cookie(name, value, options) | 设置缓存的名称和值，将其随响应一起发送。            |
+| res.sendFile()                   | 以字节流形式发送文件。                              |
+| res.cookie(name, value, options) | 设置 cookie 的名称和值，将其随响应一起发送。        |
 
 
 

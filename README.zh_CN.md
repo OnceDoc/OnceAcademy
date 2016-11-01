@@ -5,4 +5,6 @@
 ### Lesson 4 - MVC 模式   
 ### Lesson 5 - 三种主要的表单数据传送方法（GET、POST、GET 与 POST 同时使用）  
 ### Lesson 6 - 路由  
-### Lesson 7 - 缓存  
+### Lesson 7 - 提供静态文件
+### Lesson 8 - 客户端缓存  
+### Lesson 9 - 服务器端缓存 

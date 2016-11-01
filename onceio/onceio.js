@@ -91,7 +91,7 @@ var OnceIO = module.exports = function(options) {
     , listDir: false
     //enable debug information output
     , debug: true
-    //enable cache of template/include file (when enabled templates will not be refreshed before restart)
+    //disable cache of template/include file (when disabled templates will be refreshed before restart)
     , templateCache: false
     //load from cache When size is smaller than fileCacheSize(css/js/images, 0 is disabled)
     , fileCacheSize: 0
