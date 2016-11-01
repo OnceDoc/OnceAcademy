@@ -5,8 +5,10 @@ var app = onceio()
 app.model({ title: 'test_page', debug: true })
 
 app.use(function(req, res) {
-  res.model.debug = false
-  res.model.username = 'Kris'
+  res.model({
+	  debug   : false
+	, username: 'Kris'
+  })
   req.filter.next()
 })
 

@@ -16,8 +16,10 @@ Model 可以在应用级别使用，成为在应用的整个生命期间都有�
 也可以在 middleware 和 handler 中使用，成为只在当前请求-响应循环中有效的本地变量，例如：  
 
     app.use(function(req, res) {
-      res.model.debug = false
-      res.model.username = 'Kris'
+      res.model({
+          debug   : false
+        , username: 'Kris'
+      })
       req.filter.next()
     })
 
