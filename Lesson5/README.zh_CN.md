@@ -30,6 +30,7 @@ websvr.js 的代码如下：
 form.html 的代码如下：  
     
     <!DOCTYPE html>
+    <html>
     <body>
       <p>Form that sends data through the GET method:</p>
       <form action="/form/get_form.asp" method="get">
@@ -92,7 +93,7 @@ app.url 接口可以让 GET 与 POST 同时使用。将 websvr.js 文件中的 a
       res.send('req.body: ' + JSON.stringify(req.body))
     }, 'qs')  
     
-为减少 IO，app.url() 默认不加载 req.body，如需加载，需要把它的第三个参数设置为 'qs' 或 {POST : 'qs'}.  
+为减少 I/O，app.url() 默认不加载 req.body，如需加载，需要把它的第三个参数设置为 'qs' 或 {POST : 'qs'}.  
 
 将 form.html 文件中 body 里的内容替换为：  
 

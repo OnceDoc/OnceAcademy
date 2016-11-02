@@ -32,6 +32,7 @@ Git Bash 界面如下：
 创建好服务器文件后，再在项目文件夹中创建一个模板文件 dot.tmpl，代码如下：  
 
     <!DOCTYPE html>
+    <html>
     <body>
       <h1> Hello, {{=it.username}} </h1>
     </body>
@@ -70,6 +71,7 @@ OnceIO 的模板引擎接口与 Express 有一些不同：在使用 EJS 或 pug 
 模板文件 example_ejs.ejs 的代码为：  
   
     <!DOCTYPE html>
+    <html>
     <body>
       <h1> Hello, <%= username %> </h1>
     </body>

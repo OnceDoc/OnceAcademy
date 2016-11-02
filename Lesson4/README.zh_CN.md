@@ -39,6 +39,7 @@ Model 可以在应用级别使用，成为在应用的整个生命期间都有�
 模板引擎能够将规定格式的模板代码转换为业务数据，因此我们可以使用模板引擎通过模型来改变视图。例如在下面的代码中，模型中 title、debug 和 username 属性的值会影响视图的显示内容。OnceIO 默认采用的是 [doT](https://github.com/olado/doT) 模板引擎, 其性能较好，规则也较为简单。当然您也以切换成你自己熟悉的模板引擎，如 EJS 和 PUG(jade)。
 
     <!DOCTYPE html>
+    <html>
     <body>
       <h1> Title: {{=it.title}} </h1>
       <h1> Debug: {{=it.debug}} </h1>
