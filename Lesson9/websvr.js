@@ -7,6 +7,8 @@ var app = onceio({
 })
 
 
+app.preload('.', '.tmpl')
+
 app.get('/clear', function(req, res) {
     app.clear()
 }) 
