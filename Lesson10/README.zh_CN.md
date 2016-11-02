@@ -1,7 +1,7 @@
 # OnceAcademy
 ### Lesson 10 - 网页文件嵌套    
 
-OnceIO 提供将一个网页文件嵌套在另一个网页文件中的语法：<!--#include="path"-->，其中 path 为文件相对路径，引号必须为双引号。以 index.html 的代码为例：
+OnceIO 提供将一个网页文件嵌套在另一个网页文件中的语法 `<!--#include="path"-->` ，其中 path 为文件相对路径，引号必须为双引号。以 index.html 的代码为例：
 
 	<!DOCTYPE html>
 	<html>
