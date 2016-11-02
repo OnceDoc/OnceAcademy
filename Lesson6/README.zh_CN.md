@@ -12,8 +12,8 @@
 
 其中：  
   - app 是 OnceIO 的实例。  
-  - METHOD 是 HTTP 请求方法。  
-  - PATH 是服务器上的路径。  
+  - METHOD 是 HTTP 请求方法, 如get/post。  
+  - PATH 是服务器上的路由路径。  
   - HANDLER 是在路由匹配时执行的函数。
 
 #### 路由路径  
@@ -45,6 +45,8 @@
     app.get(/.*fly$/, function(req, res) {
       res.send('/.*fly$/')
     })
+
+#### 路由变量
 
 路径中可以加入变量，例如：  
 
