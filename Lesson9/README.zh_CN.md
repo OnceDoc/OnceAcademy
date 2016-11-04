@@ -29,7 +29,7 @@ fileCacheSize 的单位是 Byte，1024 * 1024 代表 1 MB。fileCacheSize 的值
   
 一般情况下，对于每个 URL，服务器硬盘只需要进行一次 I/O，这也是 OnceIO 名称的由来。  
   
-fileCacheSize 为 0，即禁用服务器端缓存机制时，一个没有客户端缓存的客户端访问某个被其它用户访问过的路径时浏览器 Network 栏效果如下：  
+fileCacheSize 为 0，即禁用服务器端缓存机制时，一个没有客户端缓存的客户端访问某个被其它用户访问过的路径时浏览器开发者工具中的 Network 栏效果如下：  
   
 ![不使用服务器内存缓存机制时 Network 栏效果][1]
   
