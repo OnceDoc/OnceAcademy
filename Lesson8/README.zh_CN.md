@@ -97,6 +97,6 @@
 
 
 [1]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/HTTP_headers_of_shader_css.png
-[2]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/cache_flow.png
+[2]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/cache_workflow.png
 [3]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/no_cache0_browser_network.png
 [4]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/cache/cache0_browser_network.png
