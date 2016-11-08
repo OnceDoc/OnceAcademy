@@ -1,7 +1,7 @@
 var onceio = require('../onceio/onceio')
 var app = onceio({ 
     sessionTimeout : 10000 
-  , sessionDir     : 'sessionStore'
+  , sessionDir     : './sessionStore'
 })
 
 
