@@ -1,5 +1,5 @@
 var onceio = require('../onceio/onceio')
-global.app = onceio({home: './web'})
+global.app = onceio({ home: './web' })
 
 
 require('./form/svr/form.js')
