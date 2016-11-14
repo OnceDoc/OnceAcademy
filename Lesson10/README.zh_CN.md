@@ -1,7 +1,7 @@
 # OnceAcademy
 ### Lesson 10 - 网页文件嵌套    
 
-OnceIO 提供将一个网页文件嵌套在另一个网页文件中的语法 `<!--#include="path"-->` ，其中 path 为文件相对路径，引号必须为双引号。以 index.html 的代码为例：
+OnceIO 提供将一个网页文件嵌套在另一个网页文件中的机制。文件嵌套与模板引擎无关，语法固定为 `<!--#include="path"-->` ，其中 path 为文件相对路径，引号必须为双引号，中间不能有空格。以 index.html 的代码为例：
 
 	<!DOCTYPE html>
 	<html>
@@ -38,7 +38,7 @@ index.html 显示效果为：
   
 ![index.html 显示效果][1] 
   
-嵌套的层数理论上是没有限制的，被嵌套网页也能嵌套其它网页，但互相嵌套可能会造成问题。例如，如果在 header.html 中嵌套 index.html，index.html 显示效果为：  
+嵌套的层数理论上是没有限制的，被嵌套网页也能嵌套其它网页，但互相循环嵌套可能会造成问题。例如，如果在 header.html 中嵌套 index.html，而index.html又嵌套了header，则index.html 显示效果为：  
   
 ![互相嵌套时 index.html 显示效果][2] 
   
