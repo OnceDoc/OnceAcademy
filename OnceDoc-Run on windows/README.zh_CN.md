@@ -4,6 +4,7 @@
 
 #### 第一步、安装 Node.js
 
+在 [Node.js 官网](nodejs.org) 下载并安装Node.js。
 
 #### 第二步、运行 OnceDoc
 
@@ -15,6 +16,7 @@
 
 这时我们就可以在浏览器中访问 localhost:8064，使用 OnceDoc 的各项功能了：  
   
+![访问 localhost:8064][2]
 
 [1]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/OnceDoc/start.png
 [2]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Win_run_OnceDoc/visiting_localhost.png
