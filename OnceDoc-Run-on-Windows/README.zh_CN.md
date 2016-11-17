@@ -8,7 +8,7 @@
 
 #### 第二步、运行 OnceDoc
 
-安装好 Node.js 后，我们可以运行 'oncedoc.release' 目录下的 start.cmd，启动 OnceDoc 的本地服务器：  
+拿到最新的OnceDoc发行版并解压后，找到 'oncedoc.release' 目录下的 start.cmd，并双击运行，启动 OnceDoc 的本地服务器，即安装完毕：
   
 ![运行 oncedoc.cmd][1]
 
