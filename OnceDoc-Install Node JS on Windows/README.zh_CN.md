@@ -1,14 +1,16 @@
 # OnceAcademy
 
-### 在 Windows 系统下运行 OnceDoc    
+### 在 Windows 系统下运行安装NodeJS
 
-#### 第一步、安装 Node.js
+#### 第一步、下载 Node.js
 
 在 [Node.js 官网](nodejs.org) 下载 Node.js 最新版本安装包，推荐下载较稳定的 LTS 版本:  
   
 ![下载 Node.js 最新版本安装包][1]  
+
+#### 第二步、安装 Node.js
   
-下载完成后，打开安装包进行安装：  
+下载完成后，打开安装包进行安装，一直点下一步
   
 ![Node.js 安装过程 1][2]  
   
@@ -23,7 +25,9 @@
 ![Node.js 安装过程 6][7]  
   
 ![Node.js 安装过程 7][8]  
-  
+
+#### 第三步、安装 Node.js
+
 安装完成后，我们可以用 <kbd>Win</kbd>+<kbd>R</kbd> 打开运行工具，再输入 'cmd' 打开命令行工具：  
   
 ![打开 cmd][9]  
@@ -35,18 +39,7 @@
 输入 'node -v' 查看本机 Node.js 的版本号，检验安装是否成功:  
   
 ![查看本机 Node.js 的版本号][11]
-  
-#### 第二步、运行 OnceDoc
 
-安装好 Node.js 后，我们可以运行 'oncedoc.release/oncedoc' 目录下的 oncedoc.cmd，启动 OnceDoc 的本地服务器：  
-  
-![打开 oncedoc.cmd][12]  
-  
-![运行 oncedoc.cmd][13]  
-  
-这时我们就可以在浏览器中访问 localhost:8064，使用 OnceDoc 的各项功能了：  
-  
-![访问 localhost:8064][14]  
 
 
 
