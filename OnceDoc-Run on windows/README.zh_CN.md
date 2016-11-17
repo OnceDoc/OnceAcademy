@@ -4,13 +4,15 @@
 
 #### 第一步、安装 Node.js
 
-在 [Node.js 官网](nodejs.org) 下载并安装Node.js。
+在 [Node.js 官网](nodejs.org) 下载并安装Node.js[(详细过程)](3)。
 
 #### 第二步、运行 OnceDoc
 
 安装好 Node.js 后，我们可以运行 'oncedoc.release' 目录下的 start.cmd，启动 OnceDoc 的本地服务器：  
   
 ![运行 oncedoc.cmd][1]
+
+此时会启动两个进程，一个是OnceDB所基于的内存数据库Redis，一个是OnceDoc主进程。
 
 #### 第三步、访问 OnceDoc
 
@@ -20,3 +22,4 @@
 
 [1]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/OnceDoc/start.png
 [2]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/Win_run_OnceDoc/visiting_localhost.png
+[3]: https://github.com/OnceDoc/OnceAcademy/blob/master/OnceDoc-Install%20Node%20JS%20on%20Windows/README.zh_CN.md
