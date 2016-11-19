@@ -25,7 +25,7 @@ res.cookie 函数的第三个参数是可选的，其中 domain 代表 Cookie �
 		res.send('<b>req.cookies:</b> ' + req.cookies)
 	})
   
-开发人员工具中 Network 栏效果如下，'Set-Cookie' 的HTTP Header即当前设置的 res.cookies：  
+开发人员工具中 Network 栏效果如下，HTTP Header中的'Set-Cookie'即当前设置的 res.cookies：  
   
 ![set_cookie Network 栏效果][3]  
 
