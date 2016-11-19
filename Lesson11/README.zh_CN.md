@@ -18,16 +18,6 @@ OnceIO 使用 res.cookies 和 req.cookies 对象储存 Cookie；用 res.cookie �
 
 res.cookie 函数的第三个参数是可选的，其中 domain 代表 Cookie 生效的域名，默认为当前域名；path 代表 Cookie 在本地的储存路径，默认为当前目录；httponly 默认值为 true，代表 Cookie 只能在 HTTP 协议中使用，通过 JavaScript 脚本将无法读取到 Cookie，这样能有效地防止 XSS 攻击。
 
-####  显示Cookie
-
-	//display request cookie
-	app.get('/', function(req, res) {
-		res.send('<b>req.cookies:</b> ' + req.cookies)
-	})
-  
-开发人员工具中 Network 栏效果如下，HTTP Header中的'Set-Cookie'即当前设置的 res.cookies：  
-  
-![set_cookie Network 栏效果][3]  
 
 ####  设置Cookie
 
@@ -42,6 +32,9 @@ res.cookie 函数的第三个参数是可选的，其中 domain 代表 Cookie �
   
 ![set_cookie 浏览器显示效果][2]
 
+开发人员工具中 Network 栏效果如下，HTTP Header中的'Set-Cookie'即当前设置的 res.cookies：  
+
+![set_cookie Network 栏效果][3]  
 
 ####  删除Cookie
 
@@ -54,7 +47,14 @@ res.cookie 函数的第三个参数是可选的，其中 domain 代表 Cookie �
 访问 '/del_cookie' ，服务器通过把 Cookie 中 key 的 value 设为 null 并且把 Cookie 的过期时间设置过去的一个时间点让 Cookie 立即过期，实现删除 Cookie 的目的。浏览器开发人员工具中 Network 栏效果如下：  
   
 ![del_cookie Network 栏效果][4]  
-  
+
+####  显示Cookie
+
+	//display request cookie
+	app.get('/', function(req, res) {
+		res.send('<b>req.cookies:</b> ' + req.cookies)
+	})
+
 在访问 '/set_cookie' 之后，删除 Cookie 之前访问 '/' ，由于 Cookie 在 localhost:8054 下共享，浏览器显示的 req.cookies 即在 '/set_cookie' 设置的 Cookie：  
   
 ![set_cookie 后 req.cookies][5]  
