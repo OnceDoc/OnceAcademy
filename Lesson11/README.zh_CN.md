@@ -31,7 +31,7 @@ OnceIO 使用 res.cookies 和 req.cookies 对象储存 Cookie；用 res.cookie �
 		res.send('<b>req.cookies:</b> ' + req.cookies)
 	})
 
-res.cookie 函数的第三个参数是可选的，其中 domain 代表 Cookie 生效的域名，默认为当前域名；path 代表 Cookie 在本地的储存路径，默认为根目录；httponly 默认值为 true，代表 Cookie 只能在 HTTP 协议中使用，通过 JavaScript 脚本将无法读取到 Cookie，这样能有效地防止 XSS 攻击。  
+res.cookie 函数的第三个参数是可选的，其中 domain 代表 Cookie 生效的域名，默认为当前域名；path 代表 Cookie 在本地的储存路径，默认为当前目录；httponly 默认值为 true，代表 Cookie 只能在 HTTP 协议中使用，通过 JavaScript 脚本将无法读取到 Cookie，这样能有效地防止 XSS 攻击。
   
 运行服务器，在默认端口访问 '/set_cookie' 设置 Cookie，浏览器显示效果如下：  
   
