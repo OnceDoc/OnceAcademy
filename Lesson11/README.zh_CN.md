@@ -14,11 +14,35 @@ HTTP 是一种无状态的协议，服务器单从网络连接上无从知道客
 OnceIO 使用 res.cookies 和 req.cookies 对象储存 Cookie；用 res.cookie 函数设置或删除 Cookie，示例代码如下：
 
 	//set Cookie
+	res.cookie('sessionID', 1234, { domain: '', path: '/', httponly: true })
+
+res.cookie 函数的第三个参数是可选的，其中 domain 代表 Cookie 生效的域名，默认为当前域名；path 代表 Cookie 在本地的储存路径，默认为当前目录；httponly 默认值为 true，代表 Cookie 只能在 HTTP 协议中使用，通过 JavaScript 脚本将无法读取到 Cookie，这样能有效地防止 XSS 攻击。
+
+####  设置Cookie
+
+	//set Cookie
 	app.get('/set_cookie', function(req, res) {
 		res.cookie('sessionID', 1234, { domain: '', path: '/', httponly: true })
 		//equals to "res.cookie('sessionID', 1234)"
 		res.send('<b>res.cookies:</b> ' + res.cookies)
 	})
+
+运行服务器，在默认端口访问 '/set_cookie' 设置 Cookie，浏览器显示效果如下：  
+  
+![set_cookie 浏览器显示效果][2]
+
+####  显示Cookie
+
+	//display request cookie
+	app.get('/', function(req, res) {
+		res.send('<b>req.cookies:</b> ' + req.cookies)
+	})
+  
+开发人员工具中 Network 栏效果如下，'Set-Cookie' 的内容即为 res.cookies：  
+  
+![set_cookie Network 栏效果][3]  
+
+####  删除Cookie
 
 	//delete Cookie
 	app.get('/del_cookie', function(req, res) {
@@ -26,21 +50,6 @@ OnceIO 使用 res.cookies 和 req.cookies 对象储存 Cookie；用 res.cookie �
 		res.send('<b>res.cookies:</b> ' + res.cookies)
 	})
 
-	//display request cookie
-	app.get('/', function(req, res) {
-		res.send('<b>req.cookies:</b> ' + req.cookies)
-	})
-
-res.cookie 函数的第三个参数是可选的，其中 domain 代表 Cookie 生效的域名，默认为当前域名；path 代表 Cookie 在本地的储存路径，默认为当前目录；httponly 默认值为 true，代表 Cookie 只能在 HTTP 协议中使用，通过 JavaScript 脚本将无法读取到 Cookie，这样能有效地防止 XSS 攻击。
-  
-运行服务器，在默认端口访问 '/set_cookie' 设置 Cookie，浏览器显示效果如下：  
-  
-![set_cookie 浏览器显示效果][2]
-  
-开发人员工具中 Network 栏效果如下，'Set-Cookie' 的内容即为 res.cookies：  
-  
-![set_cookie Network 栏效果][3]  
-  
 访问 '/del_cookie' ，服务器通过把 Cookie 中 key 的 value 设为 null 并且把 Cookie 的过期时间设置过去的一个时间点让 Cookie 立即过期，实现删除 Cookie 的目的。浏览器开发人员工具中 Network 栏效果如下：  
   
 ![del_cookie Network 栏效果][4]  
