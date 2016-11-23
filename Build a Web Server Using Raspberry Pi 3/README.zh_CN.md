@@ -149,5 +149,5 @@
 [3]: https://www.raspberrypi.org/downloads/
 [4]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/raspberry_pi_web_server/OS_downloads_page.png
 [5]: https://sourceforge.net/projects/win32diskimager/
-[6]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/raspberry_pi_web_server/OS_downloads_page.png
+[6]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/raspberry_pi_web_server/raspberry_pi_OS_interface.png
 [7]: https://nodejs.org/dist/
