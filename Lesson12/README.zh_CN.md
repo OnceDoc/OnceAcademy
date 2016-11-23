@@ -29,6 +29,22 @@ sessionDomain 属性标识了 Session 属于哪一个域名站点，可在定义
 
 SessionID 是以 key-value 的格式保存在 Cookie 中的。sessionKey 就是 SessionID 的 key，而 sessionLength 就是  SessionID 的 value 的字符串长度。这两个属性都可在定义应用程序时设置，sessionKey 的默认值为 '_wsid'，sessionLength 的默认值为 36。sessionLength 为 36 时，sessionID 重复的可能性很小，因此 session 被劫持的可能性也很小。
 
+#### 启用Session
+
+OnceIO的session对象默认是不启用的，可以在middleware或handler中通过 { session: true } 启用
+
+	app.use('/', function(req, res){
+	    req.filter.next()
+	}, { session: true })
+
+#### 设置获取Session: req.session
+
+因为session对象对于客户端来讲仅在当前会话中有效，所以不需要像cookie那样配置各种参数，所以设置和获取都在req.session对象上完成，如
+
+    req.session.lastPage = '/c'
+    console.log(req.session)
+
+
 ####  应用 Session 的示例代码
 
 以下示例代码在定义应用程序时对 Session 的一些属性进行了设置：将 sessionTimeout 设置为了 10000，意味着如果页面在 10 秒内没有刷新，Session 就会过期；将 sessionDir 设置为了 'sessionStore'，意味着 Session 文件会被长期保存在服务器硬盘上的 sessionStore 文件夹中。  
