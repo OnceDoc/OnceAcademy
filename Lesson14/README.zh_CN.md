@@ -57,7 +57,11 @@
 `app.file(path, callback).before(callback)` 相当于 `app.use(path, callback, {file: true}).before(callback)`，是一个处理上传的文件的中间件。  
   
 文件被上传后，它的大小、存放地址、名称、格式和修改时间五项信息会被放在 req.files 的 file 属性里（名称是 type
-为 'file' 的 input 标签中 name 的值），它的尺寸信息会被放在 req.headers 的 content-length 属性里。接着， before 中的回调函数会根据 req.headers 中的 content-length 判断上传的文件是否超出了尺寸限制（开发人员可以通过修改 if 语句中的常数改变文件上传尺寸上限，content-length 单位为 byte，1024 * 1024 即代表 1 MB），如果超出了，文件不会被上传，服务器返回错误信息；如果没有超出，函数返回值为 true，服务器继续执行 app.file 中的回调函数，将文件从临时地址转移到指定存储地址，文件上传到这里就完成了。  
+为 'file' 的 input 标签中 name 的值），它的尺寸信息会被放在 req.headers 的 content-length 属性里。
+
+##### before函数
+
+before函数提供了一种机制，可以在文件接收之前根据req.headers对文件进行验证(如大小、类型)，return true 表示验证通并开始接收文件。在这里 before 中的回调函数会根据 req.headers 中的 content-length 判断上传的文件是否超出了尺寸限制（开发人员可以通过修改 if 语句中的常数改变文件上传尺寸上限，content-length 单位为 byte，1024 * 1024 即代表 1 MB），如果超出了，文件不会被上传，服务器返回错误信息；如果没有超出，函数返回值为 true，服务器继续执行 app.file 中的回调函数，将文件从临时地址转移到指定存储地址，文件上传到这里就完成了。  
   
 ##### 解决文件重名问题
 
