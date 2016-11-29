@@ -235,7 +235,7 @@
 
 #### 第四步、启动 OnceDoc
 
-进入 oncedoc.release 下的 oncedoc 文件夹，执行以下指令启动 OnceDoc：
+OnceDoc 文件可以用 U 盘或 FTP 传输到树莓派上。传输好后，进入 oncedoc.release 下的 oncedoc 文件夹，执行以下指令启动 OnceDoc：
 
 	sudo node ./svr/oncedoc.js config.js
 
@@ -255,6 +255,6 @@
 [3]: https://www.raspberrypi.org/downloads/
 [4]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/raspberry_pi_web_server/OS_downloads_page.png
 [5]: https://sourceforge.net/projects/win32diskimager/
-[6]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/raspberry_pi_web_server/raspberry_pi_OS_interface.png
+[6]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/raspberry_pi_web_server/raspberry_pi_OS_interface.jpg
 [7]: http://nodejs.org/dist/
-[8]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/raspberry_pi_web_server/OnceDoc_webpage.png
+[8]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/raspberry_pi_web_server/OnceDoc_webpage.jpg
