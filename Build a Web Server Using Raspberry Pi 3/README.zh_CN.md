@@ -91,20 +91,24 @@
 	v6.9.1
 	3.10.8
 
-#### 第三步、配置 Redis
+#### 第三步、安装 Redis 并设置开机自动启动
 
 ##### 安装 Redis
 
 	# 如不想每条指令都输 sudo，可首先切换到 root 用户
 	sudo -s 
+
 	# 创建一个编译的目录
 	mkdir /opt/redis
     cd /opt/redis
+
     # 下载最新版 Redis 压缩包
     # 若版本有更新，可将 “2.8.24” 批量换成最新的版本号
     wget http://download.redis.io/releases/redis-2.8.24.tar.gz
+
     # 解压缩
 	tar -xzf redis-2.8.24.tar.gz
+
 	# 安装
 	cd redis-2.8.24
 	make install
@@ -117,16 +121,20 @@
 	cp /opt/redis/redis-2.8.24/src/redis-server /opt/redis/
 	cp /opt/redis/redis-2.8.24/src/redis-check-aof /opt/redis/
 	cp /opt/redis/redis-2.8.24/src/redis-check-dump /opt/redis/
+
 	# 创建一个 Redis 用户，目的是提高安全性，防止其他用户访问 Redis 和查看日志，以及限制 Redis 本身的活动范围
 	adduser --system --no-create-home --disabled-login --disabled-password --group redis
+
 	# 创建可写的日志文件（log），将此文件的所有者变更为刚刚创建的用户 redis
 	touch /var/log/redis.log
 	chown redis:redis /var/log/redis.log
 	chmod u+w /var/log/redis.log
+
 	# 创建 Redis 配置文件 这里使用 nano 进行编译
 	mkdir /etc/redis
 	touch /etc/redis/redis.conf
 	chown redis:redis -R /etc/redis/
+
 	# 编辑 Redis 配置文件，这里使用的文本编辑器是 nano
 	nano /etc/redis/redis.conf
 
@@ -155,10 +163,11 @@
 	chown redis:redis /var/redis
 	chmod u+xw /var/redis
 	cd /etc/init.d/
+
 	# 创建并编辑 Redis 开机启动脚本
 	nano redis
 
-开机启动脚本内容：
+Redis 开机启动脚本内容如下：
 
 	#! /bin/sh
 	### BEGIN INIT INFO
@@ -235,16 +244,81 @@
 
 #### 第四步、启动 OnceDoc
 
-OnceDoc 文件可以用 U 盘或 FTP 传输到树莓派上。传输好后，进入 oncedoc.release 下的 oncedoc 文件夹，执行以下指令启动 OnceDoc：
+OnceDoc 文件可以用 U 盘或 FTP 传输到树莓派上。传输好后，进入 oncedoc 文件夹（这里以 oncedoc 存放在 /var/www/ 目录下为例），执行以下指令启动 OnceDoc：
 
+	cd /var/www/oncedoc
 	sudo node ./svr/oncedoc.js config.js
 
 运行后我们可在同一局域网的任意一台设备上访问 OnceDoc 服务器，服务器默认在 8064 端口下运行，以树莓派在局域网的 IP 地址为 10.10.10.22 为例，服务器访问地址是 10.10.10.22:8064
   
 ![OnceDoc 网页][8]  
   
+#### 第五步、设置 OnceDoc 的开机启动
 
+在 etc/init.d/ 目录下创建 OnceDoc 开机启动脚本：
 
+	cd /etc/init.d/
+
+	# 创建并编辑 OnceDoc 开机启动脚本
+	nano oncedoc
+
+OnceDoc 开机启动脚本内容如下：
+
+	#! /bin/sh
+
+	### BEGIN INIT INFO
+	# Provides: OnceDoc
+	# Required-Start: $network $remote_fs $local_fs
+	# Required-Stop: $network $remote_fs $local_fs
+	# Default-Start: 2 3 4 5
+	# Default-Stop: 0 1 6
+	# Short-Description: start and stop node
+	# Description: OnceDoc
+	### END INIT INFO
+
+	WEB_DIR='/var/www/oncedoc'
+	WEB_APP='svr/service.js'
+
+	#location of node you want to use
+	#NODE_EXE=/opt/nodejs/node
+	NODE_EXE=/usr/local/bin/node
+
+	start()
+	{
+	    echo "Start OnceDoc"
+	    #important! change current folder, in order to make the relative path work.
+	    cd $WEB_DIR
+	    #make sure it will running forever and error will be logged
+	    $NODE_EXE $WEB_DIR/$WEB_APP svr/oncedoc.js config.js &
+	}
+
+	stop()
+	{
+	    echo "This program cann't be stopped"
+	}
+
+	case "$1" in
+	    start)
+	        start
+	        ;;
+	    stop)
+	        stop
+	        ;;
+	    restart)
+	        stop
+	        #start
+	        ;;
+	    *)
+	        echo "Usage: /etc/init.d/ourjs {start|stop|restart}"
+	        ;;
+	esac
+
+	exit 0
+
+为 oncedoc 文件添加权限，并设置开机自动运行：  
+
+	chmod u+x oncedoc
+	update-rc.d -f oncedoc defaults
 
 
 

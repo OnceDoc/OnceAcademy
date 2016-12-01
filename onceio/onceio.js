@@ -337,8 +337,10 @@ var OnceIO = module.exports = function(options) {
           for (var i = 0; i < cookieArr.length; i++) {
             var strCookie = cookieArr[i]
             var idx       = strCookie.indexOf('=')
+            var key       = strCookie.substr(0, idx).trim()
+            var val       = strCookie.substr(idx + 1).trim()
   
-            idx > 0 && (cookies[strCookie.substr(0, idx).trim()] = strCookie.substr(idx + 1).trim());
+            idx > 0 && (cookies[key] = decodeURIComponent(val));
           }
         }
   
@@ -364,7 +366,7 @@ var OnceIO = module.exports = function(options) {
 
     var self    = this
     var cookies = self.cookies = self.cookies || []
-    var setStr  = name + '=' + (value || '')
+    var setStr  = name + '=' + encodeURIComponent(value || '')
 
     options = options || {};
 
@@ -1046,36 +1048,41 @@ var OnceIO = module.exports = function(options) {
       }
 
       //if template cache enabled, get from cache pool directly
-      var cachedTemplate = tmplCachePool[tmplPath];
+      var cachedTemplate  = tmplCachePool[tmplPath];
+      var hasInclude      = cachedTemplate && cachedTemplate.indexOf(includeString) > -1
 
-      var updateCache = function(err, tmpl) {
+      var updateInclude = function(err, tmpl) {
         if (err) {
           console.error(err, tmplPath);
-          cb && cb("");
+          cb && cb('');
+          return ''
         } else if (res) {
-          tmpl = getInclude(tmpl.toString(), cb, res);
-          tmplCachePool[tmplPath] = tmpl;
-          console.log('Update template cache', tmplPath);
+          tmpl = tmpl.toString();
+          //update cache before replace the include
+          if (!Settings.templateCache || typeof cachedTemplate == 'undefined') {
+            console.log('Update template cache', tmplPath);
+            tmplCachePool[tmplPath] = tmpl;
+          }
+
+          tmpl = getInclude(tmpl, cb, res);
+          return tmpl;
         }
       };
 
       /*
-      templateCache: If enabled get from file at the first time and then get from cache
+      templateCache: 
       */
       if (Settings.templateCache && cachedTemplate) {
         console.log('Get from cache:', tmplPath);
-
-        if (cachedTemplate.indexOf(includeString) > -1) {
-          updateCache(null, cachedTemplate);
-        } else {
-          cb && cb(cachedTemplate);
-        }
+        !hasInclude && cb && cb(cachedTemplate);
       } else {
         console.log('Get from file:', tmplPath);
-        // fs.readFile(fullpath, updateCache);
-        fs.readFile(tmplPath, updateCache);
+        fs.readFile(tmplPath, updateInclude);
       }
 
+      if (hasInclude) {
+        return updateInclude(null, cachedTemplate);
+      }
       return cachedTemplate;
     };
 
@@ -1753,6 +1760,7 @@ var OnceIO = module.exports = function(options) {
   self.engine   = Template.setEngine;
   self.engines  = Template.engines;
   self._model   = Template._model;
+  self.MODEL    = Template._model;
   self.model    = setModel;
   self.clear    = Template.clear;
   //preload templates

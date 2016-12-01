@@ -5,6 +5,7 @@
 由于 doT.js 模板引擎的整体性能较优，OnceIO 采用 doT.js 作为默认模板引擎。在使用任何一种除了 doT.js 之外的模板引擎之前都需要先用 cmd 在项目文件夹安装这种模板引擎。以使用 Git Bash 安装 EJS 为例，使用的命令是：  
     
     $ npm install ejs  
+
 Git Bash 界面如下：
 
 ![Git Bash 界面][1]   

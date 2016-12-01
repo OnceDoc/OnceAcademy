@@ -12,4 +12,5 @@
 ### Lesson 11 - Cookie  
 ### Lesson 12 - Session  
 ### Lesson 13 - Module  
-### Lesson 14 - Uploading file
+### Lesson 14 - Uploading file  
+### Lesson 15 - Use Redis for Session storage
