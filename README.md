@@ -13,4 +13,7 @@
 ### Lesson 12 - Session  
 ### Lesson 13 - Module  
 ### Lesson 14 - Uploading file  
-### Lesson 15 - Use Redis for Session storage
+### Lesson 15 - Using Redis for Session storage  
+### Lesson 16 - Installing and runing Node.JS on Windows  
+### Lesson 17 - Runing OnceDoc on Windows  
+### Lesson 18 - Building web server using Raspberry Pi 3
