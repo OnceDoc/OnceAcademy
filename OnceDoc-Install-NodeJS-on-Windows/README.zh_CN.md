@@ -1,6 +1,6 @@
 # OnceAcademy
 
-### 在 Windows 系统下运行安装 Node.JS
+### 在 Windows 系统下运行安装 Node.js
 
 #### 第一步、下载 Node.js
 

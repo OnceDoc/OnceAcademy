@@ -3,7 +3,8 @@
 #### 第一步、在 oncedoc 目录下找到 onceio 文件夹，复制到项目文件夹中。  
 
 onceio 在 oncedoc 中路径如下图所示：  
-![onceio 在 oncedoc 中路径][1]   
+
+![onceio 在 oncedoc 中路径][1]  
 
 #### 第二步、在项目文件夹中创建 websvr.js 文件。  
 
@@ -30,14 +31,14 @@ websvr.js 代码如下：
 
 #### 第三步、运行服务器。
 
-打开 cmd，用 cd 命令定位到项目目录下，然后执行 node websvr.js 命令，即可运行服务器。
-![cmd 效果][2]
-
-
-在浏览器中打开 localhost:8054，得到以下结果：
-![浏览器效果][3]
-
-
+打开 cmd，用 cd 命令定位到项目目录下，然后执行 node websvr.js 命令，即可运行服务器。  
+  
+![cmd 效果][2]  
+  
+在浏览器中打开 localhost:8054，得到以下结果：  
+  
+![浏览器效果][3]  
+  
 至此，一个简单的 OnceIO 服务器就搭建好了。
 
 

@@ -1,5 +1,5 @@
 # OnceDB
-### 数据库对象属性的三种类型： id、unique、index    
+### 数据库对象属性的三种类型：id、unique、index    
 
 使用 OnceDB 创建 schema（数据库对象的集合）时，需要为 schema 中的各个属性选择类型，以创建 user schema 为例：  
 
