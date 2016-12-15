@@ -9,7 +9,23 @@
 	  , isAdmin  : 'index'
 	})
 
-其中 username 的类型为 id，email 类型为 unique("param")，isAdmin 类型为 index。
+其中 username 的类型为 id，email 类型为 unique("param")，isAdmin 类型为 index。  
+
+创建好 schema 后，可以向其中插入数据库对象，以插入 username 分别为‘Tom’和‘Peter’的两个 user 对象为例：
+
+    oncedb.insert('user', {username: 'Tom', email: 'tom@gmail.com', isAdmin: 0}, function(err){console.log(err)})
+
+    oncedb.insert('user', {username: 'Peter', email: 'peter@gmail.com', isAdmin: 0}, function(err){console.log(err)})
+
+插入数据库对象后，可以用查询语句在 schema 中查找符合条件的对象，带参数的 unique 类型和 index 类型的属性都可以作为查找条件。以查找 email 为‘tom@gmail.com’的 user 对象为例：
+
+    oncedb.select('user', {email: 'tom@gmail.com'}, function(err, docs) {console.log(docs)})
+
+console 返回的内容为：
+
+    [ { username: 'Tom', email: 'tom@gmail.com', isAdmin: '0' } ]
+
+查找到‘Tom’这一对象。
 
 #### id
 
@@ -17,39 +33,17 @@ id，即唯一标识符，每一个 schema 必须有且只能有一个 id 类型
 
 #### unique 
 
-与 id 属性相似，同属一个 schema 的数据库对象的 unique 属性的值不能重复。unique 类型分为无参数的和有一个参数的两种，只有有参数的 unique 类型属性才能用于搜索。例如，在上面的 user schema 中，email 属性被设置为了有参数的 'unique("param")' 类型，此时用户可以使用 email 属性来查找 user：  
-
-	it('oncedb: search entry by email attribute', function(done) {
-		oncedb.select('user', {
-		  email    : 'tom@gmail.com'
-		}, function(err, docs) {
-			assert.equal(docs.length, 1)
-		    assert.equal(docs[0].username, 'Tom')
-		    console.log(docs)
-		    done()
-		})
-	})
-
-假设 user schema 中有 { username: 'Tom', email: 'tom@gmail.com', isAdmin: '0' } 和 { username: 'Peter', email: 'peter@gmail.com', isAdmin: '0' } 两个对象，console 显示的内容为：  
-
-	email [ [Function: anonymous] ] param
-	where is it user:Tom
-	hello there [ 'email' ]
-	email tom@gmail.com tom@gmail.com
-	[ { username: 'Tom', email: 'tom@gmail.com', isAdmin: '0' } ]
-	    √ oncedb: search entry by email attribute
-
-搜索得到的结果是 { username: 'Tom', email: 'tom@gmail.com', isAdmin: '0' } 这一条目。  
+与 id 属性相似，同属一个 schema 的数据库对象的 unique 属性的值不能重复。unique 类型分为无参数的和有一个参数的两种，只有有参数的 unique 类型属性才能作为数据库对象的查询条件。  
   
-有参数的 unique 属性之所以能用于搜索数据库对象，是因为 unique 的参数 param 在数据库中储存形式是以 unique 属性的值为 key，schema 的 id 属性的值为 value 的 hash 表：  
+unique 的参数 param 在数据库中储存形式是以 unique 属性的值为 key，schema 的 id 属性的值为 value 的 hash 表：  
   
 ![unique 的参数 param 在数据库中储存形式][1]  
   
 #### index
 
-index 属性也可以用于搜索数据库对象。对每个 index 属性的每一个值，数据库系统都会创建一个有序集 ZSET，组成这个有序集的元素是所有这个 index 属性的值是这个值的数据库对象的 id 属性的值。  
+index 属性也可以作为数据库对象的查询条件。对每个 index 属性的每一个值，数据库系统都会创建一个有序集 ZSET，ZSET 中元素的 value 是所有符合此 index 属性为该值的条件的数据库对象的 id 属性的值。  
   
-依旧以有 { username: 'Tom', email: 'tom@gmail.com', isAdmin: '0' } 和 { username: 'Peter', email: 'peter@gmail.com', isAdmin: '0' } 两个对象的 user schema 为例，针对 isAdmin 这一 index 属性的值 '0'，数据库系统创建了一个 ZSET：  
+以有 { username: 'Tom', email: 'tom@gmail.com', isAdmin: '0' } 和 { username: 'Peter', email: 'peter@gmail.com', isAdmin: '0' } 两个对象的 user schema 为例，针对 isAdmin 这一 index 属性的值 '0'，数据库系统创建了一个 ZSET：  
   
 ![针对 isAdmin = 0 创建的 ZSET][2]  
   

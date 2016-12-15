@@ -89,6 +89,38 @@ describe('connect database', function() {
     })
   })
 
+})
+
+describe('connect database', function() {
+
+  it('oncedb: extend schema', function(done) {
+
+      /*
+      define schema
+      */
+      oncedb.extend('user', {
+          keyword : "keywords('key', +new Date())"
+      })
+
+      oncedb.insert('user', {username: 'Mary', email:'mary@163.com', keyword:'female,single'})
+
+      oncedb.insert('user', {username: 'Robert', email:'robert@163.com', keyword:'male,single'})
+
+      setTimeout(done, 2000);
+      done()
+  })
+
+    it('oncedb: search entry by keyword', function(done) {
+    oncedb.select('user', {
+      keyword   :  'single'
+    }, function(err, docs) {
+        assert.equal(docs.length, 2)
+        console.log(docs)
+        done()
+    })
+  })
+
+
   it('oncedb: flush database', function(done) {
     oncedb.client.flushdb(function(err) {
 
@@ -97,5 +129,4 @@ describe('connect database', function() {
       done()
     })
   })
-
 })
