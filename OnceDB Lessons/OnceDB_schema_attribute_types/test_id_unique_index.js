@@ -96,7 +96,7 @@ describe('connect database', function() {
   it('oncedb: extend schema', function(done) {
 
       /*
-      define schema
+      extend schema
       */
       oncedb.extend('user', {
           keyword : "keywords('key', +new Date())"
@@ -110,12 +110,42 @@ describe('connect database', function() {
       done()
   })
 
-    it('oncedb: search entry by keyword', function(done) {
+  it('oncedb: search entry by keyword', function(done) {
     oncedb.select('user', {
       keyword   :  'single'
     }, function(err, docs) {
         assert.equal(docs.length, 2)
         console.log(docs)
+        done()
+    })
+  })
+
+  it('oncedb: remove entry', function(done) {
+    oncedb.remove('user', {
+      username   :  'Peter'
+    }, function(err) {
+        console.log(err)
+        done()
+    })
+  })
+
+  it('oncedb: update entry', function(done) {
+    oncedb.update('user', {
+      username   :  'Tom',
+      email       :  'tom@163.com'
+    }, function(err) {
+        console.log(err)
+        done()
+    })
+  })
+
+  it('oncedb: upsert entry', function(done) {
+    oncedb.upsert('user', {
+        username : 'Peter'
+      , email    : 'peter@gmail.com'
+      , isAdmin  : '0'
+    }, function(err) {
+        console.log(err)
         done()
     })
   })

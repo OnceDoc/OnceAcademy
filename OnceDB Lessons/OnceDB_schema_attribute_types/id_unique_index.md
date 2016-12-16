@@ -41,7 +41,7 @@ unique 的参数 param 在数据库中储存形式是以 unique 属性的值为 
   
 #### index
 
-index 属性也可以作为数据库对象的查询条件。对每个 index 属性的每一个值，数据库系统都会创建一个有序集 ZSET，ZSET 中元素的 value 是所有符合此 index 属性为该值的条件的数据库对象的 id 属性的值。  
+index 属性也可以作为数据库对象的查询条件。对每个 index 属性的每一个值，数据库系统都会创建一个有序集 ZSET，ZSET 中元素的 value 是所有此 index 属性为该值的数据库对象的 id 属性的值。  
   
 以有 { username: 'Tom', email: 'tom@gmail.com', isAdmin: '0' } 和 { username: 'Peter', email: 'peter@gmail.com', isAdmin: '0' } 两个对象的 user schema 为例，针对 isAdmin 这一 index 属性的值 '0'，数据库系统创建了一个 ZSET：  
   

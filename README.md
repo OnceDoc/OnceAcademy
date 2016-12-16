@@ -17,4 +17,6 @@
 ### Lesson 16 - Installing and runing Node.JS on Windows  
 ### Lesson 17 - Runing OnceDoc on Windows  
 ### Lesson 18 - Building web server using Raspberry Pi 3  
-### Lesson 18 - 3 types of database objects: id, unique and index
+### Lesson 19 - 3 types of database objects: id, unique and index  
+### Lesson 20 - A type of database objects: keywords  
+### Lesson 21 - OnceDB operations: remove, update, 

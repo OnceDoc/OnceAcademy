@@ -16,5 +16,6 @@
 ### Lesson 15 - 用 Redis 储存 Session  
 ### Lesson 16 - 在 Windows 系统下运行安装 Node.js  
 ### Lesson 17 - 在 Windows 系统下运行 OnceDoc  
-### Lesson 18 - 用树莓派 3（Raspberry Pi 3）搭建 OnceDoc 服务器   
-### Lesson 18 - 数据库对象属性的三种类型：id、unique、index   
+### Lesson 18 - 用树莓派 3（Raspberry Pi 3）搭建 OnceDoc 服务器  
+### Lesson 19 - 数据库对象属性的三种类型：id、unique、index    
+### Lesson 20 - 数据库对象属性类型：keywords
