@@ -102,9 +102,9 @@ describe('connect database', function() {
           keyword : "keywords('key', +new Date())"
       })
 
-      oncedb.insert('user', {username: 'Mary', email:'mary@163.com', keyword:'female,single'})
+      oncedb.insert('user', {username: 'Mary', email:'mary@163.com', keyword:'female, single'})
 
-      oncedb.insert('user', {username: 'Robert', email:'robert@163.com', keyword:'male,single'})
+      oncedb.insert('user', {username: 'Robert', email:'robert@163.com', keyword:'male, single'})
 
       setTimeout(done, 2000);
       done()

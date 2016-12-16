@@ -7,9 +7,9 @@
 
 加入新属性后，插入两个具有这一属性的数据库对象，关键词在数据库中以集合形式储存：
 
-    oncedb.insert('user', {username: 'Mary', email:'mary@163.com', keyword:'female,single'})
+    oncedb.insert('user', {username: 'Mary', email:'mary@163.com', keyword:'female, single'})
 
-    oncedb.insert('user', {username: 'Robert', email:'robert@163.com', keyword:'male,single'})
+    oncedb.insert('user', {username: 'Robert', email:'robert@163.com', keyword:'male, single'})
  
 可以以 keywords 类型的属性作为查找条件，在 schema 中查找符合条件的对象，以查找 keyword 中有‘single’的 user 对象为例：
 
