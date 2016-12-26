@@ -31,19 +31,19 @@
 
 模块路由的 render 方法会自动根据当前请求的地址前辍来判断从哪个模块中查找相应的模块文件，例如：
 
+下面这段代码中的 'form.html'，会根据当前请求从 form 模块目录中查找，即 './form/web/form.html'；
+
     app.get('/form', function(req, res) {
         res.render('form.html')
     })
 
-上面这段代码中的 'form.html'，会根据当前请求从 form 模块目录中查找，即 './form/web/form.html'；
+下面这段代码中的 '/form.html'，因为是绝对路径，则会从根web目录进行查找，即 './web/form.html'，访问时会因文件不存在报错:
 
     app.get('/form', function(req, res) {
         res.render('/form.html')
     })
 
-上面这段代码中的 '/form.html'，因为是绝对路径，则会从根web目录进行查找，即 './web/form.html'，因文件不存在则会报错。
-
-模板文件也可以嵌套其它模块下的模板文件，只需使用以 '/' 开头的绝对路径即可，否则则会从当前模块目录下查找，例如：
+模板文件也可以嵌套其它模块下的模板文件，只需使用以 '/' 开头的绝对路径即可，否则会从当前模板所在的模块目录下查找。例如引用 user 模块中的 user.html 模板。
 
     <!--#include="/user/user.html"-->
 
@@ -62,7 +62,7 @@
     })
 
 
-因 form/user 模块也要使用 app 对象，代码中的 app 变量就需要设置为全局变量，让模块程序也可以引用，代码中还需要增加Session的支持，修改后的代码如下:
+因 form/user 模块也要使用 app 对象，代码中的 app 变量就需要设置为全局变量，让模块程序也可以引用，代码中还需要增加Session的支持和引用form/user模块主程序，修改后的代码如下:
 
     var onceio = require('../onceio/onceio')
     global.app = onceio({ home: './web' })
@@ -82,7 +82,7 @@
       res.render('main.html')
     })
 
-form 模块的服务器程序 form.js 代码如下：
+form 模块的服务程序 form.js 代码如下：
 
     app.mod('form', './form/web')
 
