@@ -33,6 +33,7 @@
 以一个最简单的主程序为例，如果没有其他功能模块，主程序的代码是这样的：（定义 app 变量时 home 属性被设置为 './web'，主程序中用到的所有路径都会以主 web 目录为起点开始查找）  
 
     var onceio = require('../onceio/onceio')
+    var app = onceio({ home: './web' })
 
     require('./form/svr/form.js')
     require('./user/svr/user.js')
