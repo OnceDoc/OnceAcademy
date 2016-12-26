@@ -1,3 +1,6 @@
+/*
+regist form module
+*/
 app.mod('form', './form/web')
 
 app.get('/form', function(req, res) {
