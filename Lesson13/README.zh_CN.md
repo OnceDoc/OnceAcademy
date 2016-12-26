@@ -33,6 +33,18 @@
 以一个最简单的主程序为例，如果没有其他功能模块，主程序的代码是这样的：（定义 app 变量时 home 属性被设置为 './web'，主程序中用到的所有路径都会以主 web 目录为起点开始查找）  
 
     var onceio = require('../onceio/onceio')
+
+    require('./form/svr/form.js')
+    require('./user/svr/user.js')
+
+    app.get('/', function(req, res){
+      res.render('main.html')
+    })
+
+
+如果增加一个填写、提交表单和一个向用户问好的功能模块，代码中的 app 变量就需要设置为全局变量，让模块程序也可以引用，代码中还需要增加调用模块程序的语句和Session的支持，修改后的代码如下:
+
+    var onceio = require('../onceio/onceio')
     global.app = onceio({ home: './web' })
 
 
@@ -50,21 +62,7 @@
       res.render('main.html')
     })
 
-
-如果增加一个填写、提交表单和一个向用户问好的功能模块，代码中的 app 变量就需要设置为全局变量，让模块程序也可以引用，代码中还需要增加调用模块程序的语句，修改后的代码如下:
-
-	var onceio = require('../onceio/onceio')
-	global.app = onceio({ home: './web' })
-
-
-	require('./form/svr/form.js')
-	require('./user/svr/user.js')
-
-	app.get('/', function(req, res){
-	    res.render('main.html')
-	})
-
-如果不考虑模块自身功能的实现，form 模块的服务器程序代码如下：  
+如果不考虑模块自身功能的实现，form 模块的服务器程序代码如下：
 
     app.mod('form', './form/web')
 
@@ -104,4 +102,4 @@ app.mod 语句对 form 模块进行了注册。注册完成后，服务器程序
 
 
 [1]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/module/main_form_user.png
-[2]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/module/Modular Routing.png
+[2]: https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/module/module_routing.png
