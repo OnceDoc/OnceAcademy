@@ -4,7 +4,7 @@
 
 #### First step. Install Node.js
 
-Download Node.js on the official website [Node.js](nodejs.org). Install the software refering to the [detailed instructions][3]
+Download Node.js on the official website [Node.js](nodejs.org). Install the software refering to the [detailed instructions][3]. The software could be any version higher than, including 0.12.9.The installation environment should be higher than win7 x64.
 
 #### Seocnd step. Operate OnceDoc
 

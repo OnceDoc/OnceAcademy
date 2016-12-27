@@ -5,6 +5,8 @@
 #### 第一步、安装 Node.js
 
 在 [Node.js 官网](nodejs.org) 下载并安装Node.js [(详细过程)][3]。
+Node.js版本需0.12.9及以上。
+安装环境需保证win7及以上，64位。
 
 #### 第二步、运行 OnceDoc
 
