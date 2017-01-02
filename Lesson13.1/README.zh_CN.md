@@ -1,7 +1,7 @@
 # OnceAcademy
-### 模块路由拦截与数据填充复写
+### 模块路由拦截与数据填充改写
 
-软件系统时常需要针对不同的客户定制不同的功能。OnceIO的模块路由可以通过一个扩展包，对系统原有模板(Template)和填充数据(Model)进行重定向或复写。从而能以不更改系统原有功能和非侵入的方式和较小代价实现对系统的深度定制和扩展。
+软件系统时常需要针对不同的客户定制不同的功能。OnceIO的模块路由可以通过一个扩展包，对系统原有模板(Template)和填充数据(Model)进行重定向或复写。从而能以不更改系统原有功能和非侵入的方式对系统的深度定制和扩展。
 
 #### 项目组织结构
 
@@ -34,7 +34,7 @@ form 的登录页面模板为 form.html，它又引用了页头(head.html)和页
     </body>
     </html>
 
-后台文件 form/svr/form.js。为了方便比较，这里注册了两个模块：form和form2，其中override模块会复写form2的Template模板和Model数据用来与form1做对比。这里还通过 app.model 为全局Model设置了title属性。
+后台文件 form/svr/form.js。为了方便比较，这里注册了两个模块：form 和 form2，其中override模块会复写form2的Template模板和Model数据。这里还通过 app.model 为全局 Model 添加了 title 属性。
 
     /*
     regist form module
@@ -69,7 +69,7 @@ form 的登录页面模板为 form.html，它又引用了页头(head.html)和页
 
 #### 模块文件的路由重定向与复写
 
-模块路由拦截是通过一个 middleware 中间件实现的，override 中声明的中间件会在form2的路由之前将所用到的Template模板文件进行重定向或者复写，并添加或更改模板将要使用的Model填充数据，路由过程如下图所示：
+模块路由拦截改写是通过一个 middleware 中间件实现的，override 中声明的中间件会在form2的路由之前将所用到的Template模板文件进行重定向或者复写，并添加或更改模板将要使用的Model填充数据，form 和 form2 的路由过程如下图所示：
 
 ![module_override](https://github.com/OnceDoc/images/blob/gh-pages/OnceAcademy/module/module_override.png)
 
@@ -91,8 +91,8 @@ form 的登录页面模板为 form.html，它又引用了页头(head.html)和页
       req.filter.next()
     })
 
-上段代码将 header.html 模板文件重定向到了 override/head.html。并删除了 foot.html 模板的内容（重写为空），即新的 /form2 将不会再显示页脚，最终效果如图所示：
+上段代码将 header.html 模板文件重定向到了 override/head.html。并删除了 foot.html 模板的内容（空字符串），即新的 /form2 将不会再显示页脚，最终效果如图所示：
 
 ![module_override_folder](https://github.com/OnceDoc/images/blob/gh-pages/OnceAcademy/module/module_form_override.png)
 
-模块的这种路由重写机制可以让我们以最小代价对现有系统进行深度定制，并以最大可能实现维护原有系统的一致性。
+模块的这种路由重写机制可以让我们以最小代价对现有系统进行深度定制，并以最大可能维护原有系统的一致性。
