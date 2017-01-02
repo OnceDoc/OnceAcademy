@@ -1,11 +1,20 @@
 # OnceAcademy
-### 模块路由复写与国际化
+### 模块路由拦截与数据填充复写
 
-软件系统时常需要针对不同的客户定制不同的界面和功能。OnceIO的模块路由机制可以在不改变系统原代码的情况下，通过一个扩展包，对系统原有模板进行重定向或复写。从而能以非侵入式的方式和较小代价实现对系统的深度定制和扩展。
+软件系统时常需要针对不同的客户定制不同的功能。OnceIO的模块路由可以通过一个扩展包，对系统原有模板(Template)和填充数据(Model)进行重定向或复写。从而能以不更改系统原有功能和非侵入的方式和较小代价实现对系统的深度定制和扩展。
 
-#### 模块文件的路由重定向与复写
+#### 项目组织结构
 
-我们将前一篇文章中的示例登录模块 form。稍加修改添加了 head.html和foot.html 的引用。
+还是以具有一个简单的用户登录项目为例。项目中会有一个实现用户登录模块 form。还有一个功能复写模块 override。
+
+override模块因仅用来复写form，因此没有专门的 web/css/js 文件夹。项目文件如图所示：
+
+![module_override_folder](https://github.com/OnceDoc/images/blob/gh-pages/OnceAcademy/module/module_override_folder.png)
+
+
+#### 原有登录模块的实现
+
+form 的登录页面模板为 form.html，它又引用了页头(head.html)和页脚(foot.html)模板文件。其中还会显示填充Model的title属性。
 
     <!DOCTYPE html>
     <html>
@@ -14,6 +23,7 @@
     </head>
     <body>
       <!--#include="head.html"-->
+      <h1>Hello {{=it.title}}</h1>
       <form action='/form/login' method='get'>
         <p>Username: <input type='text' name='username' value='admin' /></p>
         <p>Password: <input type='text' name='password' value='123456' /></p>
@@ -24,17 +34,65 @@
     </body>
     </html>
 
-以具有一个简单的用户登录项目为例。
-项目中会有一个实现用户登录功能的 form 模块和实现用户登录后的欢迎界面的 user 模块。
+后台文件 form/svr/form.js。为了方便比较，这里注册了两个模块：form和form2，其中override模块会复写form2的Template模板和Model数据用来与form1做对比。这里还通过 app.model 为全局Model设置了title属性。
+
+    /*
+    regist form module
+    */
+    app.mod('form',   './form/web')
+    app.mod('form2',  './form/web')
+
+    //preload *.html
+    app.pre('form', '.html')
+
+    app.model({ title: 'Login form' })
+
+    app.get(['/form', '/form2'], function(req, res) {
+      res.render('form.html')
+    })
+
+    app.get('/form/login', function(req, res) {
+      var loginUser = req.query
+
+      if (loginUser.password == '123456') {
+        req.session.user = loginUser
+        res.send('login success')
+      } else {
+        res.send('bad login')
+      }
+    })
+
+运行后访问 localhost:8054/form 的界面是这样的：
+
+![module_override_folder](https://github.com/OnceDoc/images/blob/gh-pages/OnceAcademy/module/module_form.png)
 
 
-以具有一个简单的用户登录项目为例。
-项目中会有一个实现用户登录功能的 form 模块和实现用户登录后的欢迎界面的 user 模块。
+#### 模块文件的路由重定向与复写
 
-两个模块文件夹中又分别有存放后端文件的 svr 文件夹和存放前端文件的 web 文件夹，web 文件夹中的文件有时还可进一步细分为 JavaScript 文件、CSS 文件、图片文件、网页文件等。再加上项目的主 web 目录和主程序，项目文件夹的结构如下图所示：
-  
-![项目文件夹结构][1]
+模块路由拦截是通过一个 middleware 中间件实现的，override 中声明的中间件会在form2的路由之前将所用到的Template模板文件进行重定向或者复写，并添加或更改模板将要使用的Model填充数据，路由过程如下图所示：
 
+![module_override](https://github.com/OnceDoc/images/blob/gh-pages/OnceAcademy/module/module_override.png)
 
-#### 国际化翻译复写
+这里使用 res.model 来复写全局 model 的属性，并使用 res.template 来对模板文件进行重定向或修改，override/main.js 代码如下所示：
 
+    app.mod('override', './override')
+    app.pre('override', '.html')
+
+    app.use('/form2', function(req, res) {
+      res.model({
+        title : 'Title override'
+      })
+
+      res.template({
+          'head.html': 'override/head.html'
+        , 'foot.html': ''
+      })
+
+      req.filter.next()
+    })
+
+上段代码将 header.html 模板文件重定向到了 override/head.html。并删除了 foot.html 模板的内容（重写为空），即新的 /form2 将不会再显示页脚，最终效果如图所示：
+
+![module_override_folder](https://github.com/OnceDoc/images/blob/gh-pages/OnceAcademy/module/module_form_override.png)
+
+模块的这种路由重写机制可以让我们以最小代价对现有系统进行深度定制，并以最大可能实现维护原有系统的一致性。

@@ -1,14 +1,16 @@
 
+app.mod('override', './override')
+app.pre('override', '.html')
 
+app.use('/form2', function(req, res) {
+  res.model({
+    title : 'Title override'
+  })
 
-app.use('/', function(req, res) {
-  app.model({ local: {
-      TITLE : 'Override title'
-    , FORM  : 'Override form'
-  }})
+  res.template({
+      'head.html': 'override/head.html'
+    , 'foot.html': ''
+  })
 
   req.filter.next()
 })
-
-
-

@@ -1,15 +1,16 @@
 /*
 regist form module
 */
-app.mod('form', './form/web')
+app.mod('form',   './form/web')
+app.mod('form2',  './form/web')
 
-app.get('/form', function(req, res) {
+//preload *.html
+app.pre('form', '.html')
+
+app.model({ title: 'Login form' })
+
+app.get(['/form', '/form2'], function(req, res) {
   res.render('form.html')
-})
-
-app.get('/form/test', function(req, res) {
-  //absolute path
-  res.render('/form.html')
 })
 
 app.get('/form/login', function(req, res) {
