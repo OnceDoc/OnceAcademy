@@ -70,7 +70,8 @@ app.pre 等效于 app.preload  即告诉 onceio 预加载指定类型的模板�
 
 #### 模块文件的路由重定向与复写
 
-模块路由拦截改写是通过一个 middleware 中间件实现的，override 中声明的中间件会在form2的路由之前将所用到的Template模板文件进行重定向或者复写，并添加或更改模板将要使用的Model填充数据，form 和 form2 的路由过程如下图所示：
+模块路由拦截改写是通过一个 middleware 中间件实现的，override 中声明的中间件会在form2的路由之前将所用到的Template模板文件进行重定向或者复写，并修改将向模板中填充的Model数据，form 和 form2 的路由过程如下图所示：
+
 
 ![module_override](https://github.com/OnceDoc/images/blob/gh-pages/OnceAcademy/module/module_override.png)
 
