@@ -95,4 +95,4 @@ form 的登录页面模板为 form.html，它又引用了页头(head.html)和页
 
 ![module_override_folder](https://github.com/OnceDoc/images/blob/gh-pages/OnceAcademy/module/module_form_override.png)
 
-模块的这种路由重写机制可以让我们以最小代价对现有系统进行深度定制，并以最大可能维护原有系统的一致性。
+模块的这种路由重写机制可以让我们以最小代价对现有系统进行深度定制，同时维持原有系统的一致性。
