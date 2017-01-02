@@ -62,6 +62,7 @@ form 的登录页面模板为 form.html，它又引用了页头(head.html)和页
       }
     })
 
+app.pre 等效于 app.preload  即告诉 onceio 预加载指定类型的模板文件。
 运行后访问 localhost:8054/form 的界面是这样的：
 
 ![module_override_folder](https://github.com/OnceDoc/images/blob/gh-pages/OnceAcademy/module/module_form.png)
