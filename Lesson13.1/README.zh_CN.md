@@ -9,7 +9,7 @@
 
 override模块因仅用来复写form，因此没有专门的 web/css/js 文件夹。项目文件如图所示：
 
-![module_override_folder](https://github.com/OnceDoc/images/blob/gh-pages/OnceAcademy/module/module_override_folder.png)
+![module_override_folder](https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/module/module_override_folder.png)
 
 
 #### 原有登录模块的实现
@@ -65,7 +65,7 @@ form 的登录页面模板为 form.html，它又引用了页头(head.html)和页
 app.pre 等效于 app.preload  即告诉 onceio 预加载指定类型的模板文件。
 运行后访问 localhost:8054/form 的界面是这样的：
 
-![module_override_folder](https://github.com/OnceDoc/images/blob/gh-pages/OnceAcademy/module/module_form.png)
+![module_override_folder](https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/module/module_form.png)
 
 
 #### 模块文件的路由重定向与复写
@@ -73,7 +73,7 @@ app.pre 等效于 app.preload  即告诉 onceio 预加载指定类型的模板�
 模块路由拦截改写是通过一个 middleware 中间件实现的，override 中声明的中间件会在form2的路由之前将所用到的Template模板文件进行重定向或者复写，并修改将向模板中填充的Model数据，form 和 form2 的路由过程如下图所示：
 
 
-![module_override](https://github.com/OnceDoc/images/blob/gh-pages/OnceAcademy/module/module_override.png)
+![module_override](https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/module/module_override.png)
 
 这里使用 res.model 来复写全局 model 的属性，并使用 res.template 来对模板文件进行重定向或修改，override/main.js 代码如下所示：
 
@@ -95,7 +95,7 @@ app.pre 等效于 app.preload  即告诉 onceio 预加载指定类型的模板�
 
 上段代码将 header.html 模板文件重定向到了 override/head.html。并删除了 foot.html 模板的内容（空字符串），即新的 /form2 将不会再显示页脚，最终效果如图所示：
 
-![module_override_folder](https://github.com/OnceDoc/images/blob/gh-pages/OnceAcademy/module/module_form_override.png)
+![module_override_folder](https://raw.githubusercontent.com/OnceDoc/images/gh-pages/OnceAcademy/module/module_form_override.png)
 
 模块的这种路由重写机制可以让我们以最小代价对现有系统进行深度定制，同时确保了在满足不同客户的定制要求时，系统核心代码的一致性。
 
