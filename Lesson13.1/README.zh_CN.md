@@ -98,3 +98,6 @@ app.pre 等效于 app.preload  即告诉 onceio 预加载指定类型的模板�
 ![module_override_folder](https://github.com/OnceDoc/images/blob/gh-pages/OnceAcademy/module/module_form_override.png)
 
 模块的这种路由重写机制可以让我们以最小代价对现有系统进行深度定制，同时确保了在满足不同客户的定制要求时，系统核心代码的一致性。
+
+
+附：示例源码[Github](https://github.com/OnceDoc/OnceAcademy/tree/master/Lesson13.1)
