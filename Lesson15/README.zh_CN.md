@@ -10,6 +10,16 @@
 1. 客户端向服务器发起请求，主进程将这一请求随机分配给某一子进程处理，如处理过程中产生 Session，客户端将 SessionID 保存在 Cookie 中，于此同时子进程将 Session 缓存到 Redis 中；
 2. 客户端向服务器发起一个包含 SessionID 的请求，主进程将这一请求随机分配给某一子进程处理，子进程把这一 SessionID 对应的 Session 从 Redis 中检索出来使用。
 
+#### 使用接口
+
+OnceIO 使用 app.sessionStore 来指定将 session 存储到何处。Session 的 Redis 存储是使用 redisstore.js 来实现。其中 client 是一个 redis 实例，第二个参数是 session 过期时间，单位为豪秒
+
+    var redisstore    = OnceStore(client, 1000 * 1000)
+    app.sessionStore  = redisstore
+
+您也可以依照 redisstore.js 写法将 session 存放到 mongodb 或 mysql 中，只需要实现：get/set/del 三个接口即可。
+
+
 #### 具体实现
 
 将 Session 储存在 Redis 里的具体实现与 Lesson 12 中将 Session 储存在服务器内存中的具体实现非常相似，创建、修改和删除 Session 的接口都没有发生改变，启动 Session 和设置获取 Session 的步骤完全相同。  
