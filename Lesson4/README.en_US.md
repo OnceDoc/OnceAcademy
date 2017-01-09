@@ -2,7 +2,7 @@
 ### Lesson 4 - Template engine and MVC design mode
 
 这一节主要介绍 [OnceIO](https://github.com/OnceDoc/onceio)（NodeJS）中模板引擎的使用。模板引擎是为了使用户界面与业务数据（内容）分离而产生的，模板引擎可以让（网站）程序实现界面与数据分离，在将数据填充到模板并最终生成HTML的过程中，天然就体现了 MVC 设计模式（Model-view-controller）。MVC 模式是一种动态的程序设计架构，用一种将业务逻辑、数据、界面显示分离的方法组织代码。简化后续对程序的修改和扩展，并且使程序的某一部分的重复利用成为可能。  
-
+This section mainly introduces the usage of template engine in [OnceIO](https://github.com/OnceDoc/onceio)(NodeJS). The template engine is mainly for seperation of user interface and operation data(contents). It could  fill in the template with data to generate HTML, which represents the MVC(Model-view-controller)design mode naturelly.
 ![后端 MVC 示意图][1]
 
 #### 模型（Model）  
