@@ -1,9 +1,9 @@
 # OnceAcademy
 ### Lesson 1 - Build a simple web server
-#### First step. Find the onceio folder under the oncedoc directory and copy it to the project folder. 
-Path of onceio in oncedoc is shown below:
+#### First step. Install onceio through npm
+Write the following setence in the command window:
 
-![path of onceio in oncedoc][1]  
+`npm install onceio`
 
 #### Second step. Create a file named websvr.js in the project folder
 websvr.js code is as follows：  

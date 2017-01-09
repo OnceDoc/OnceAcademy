@@ -14,7 +14,7 @@ Git Bash 界面如下：
 
 在项目文件夹中创建 websvr.js 文件，以使用 doT.js 模板引擎为例，websvr.js 的代码如下：  
 
-    var onceio = require('../onceio/onceio')
+    var onceio = require('onceio')
 
     var app = onceio({
         home   :  "./"
@@ -39,7 +39,7 @@ Git Bash 界面如下：
     </body>
     </html>  
 
-运行服务器，在浏览器中打开 localhost:8054/dot，得到以下结果：  
+在命令行中输入 `node websvr.js`, 运行服务器，在浏览器中打开 localhost:8054/dot，得到以下结果：  
   
 ![浏览器效果][2]  
   

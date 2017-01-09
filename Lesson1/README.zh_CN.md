@@ -1,16 +1,15 @@
 # OnceAcademy
 ### Lesson 1 - 搭建简单的 web 服务器    
-#### 第一步、在 oncedoc 目录下找到 onceio 文件夹，复制到项目文件夹中。  
+#### 第一步、通过npm安装onceio
+在命令行中输入：  
 
-onceio 在 oncedoc 中路径如下图所示：  
-
-![onceio 在 oncedoc 中路径][1]  
+ `npm install onceio`
 
 #### 第二步、在项目文件夹中创建 websvr.js 文件。  
 
 websvr.js 代码如下：  
 
-    var onceio = require("../onceio/onceio")
+    var onceio = require("onceio")
 
     var app = onceio({
       home: "./"
