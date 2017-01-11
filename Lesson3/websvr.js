@@ -1,5 +1,15 @@
-var onceio = require('../onceio/onceio')
+var onceio = require('onceio')
 var app = onceio()
+
+
+app.get('/', function(req, res) {
+  var responseText = '<ul>'
+  responseText += '<li><a href="/dot">dot template</a><li>'
+  responseText += '<li><a href="/example_pug">pug template</a><li>'
+  responseText += '<li><a href="/example_ejs">ejs template</a><li>'
+  responseText += '</ul>'
+  res.send(responseText)
+}) 
 
 
 // Using default doT.js template engine (option 1)

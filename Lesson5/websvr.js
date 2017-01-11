@@ -1,4 +1,4 @@
-var onceio = require('../onceio/onceio')
+var onceio = require('onceio')
 var app = onceio()
 
 

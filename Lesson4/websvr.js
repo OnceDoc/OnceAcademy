@@ -1,13 +1,13 @@
-var onceio = require('../onceio/onceio')
+var onceio = require('onceio')
 var app = onceio()
 
 
-app.model({ title: 'test_page', debug: true })
+app.model({ title: 'test_page', debug: false})
 
 app.use(function(req, res) {
   res.model({
-	  debug   : false
-	, username: 'Kris'
+      debug   : true
+    , username: 'Kris'
   })
   req.filter.next()
 })
