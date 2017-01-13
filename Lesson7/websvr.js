@@ -1,8 +1,8 @@
-var onceio = require('../onceio/onceio')
+var onceio = require('onceio')
 var app = onceio()
 
 
-app.static('/')
+// app.static('/')
 
 app.use(function(req, res) {
   console.log('MIDDLEWARE')

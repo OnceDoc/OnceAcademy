@@ -29,7 +29,7 @@ It could also be used in middleware and handler as local variable, which is vali
     })
   
 
-When global or local model exist at the same time, they will be automatically combined. If there is duplicated property, the model in the handler will cover that in middleware, the local model will cover the global one. For example, when all code above exist in the server, userModel will be combined with res.model and covers its username property. Then the combined model will merge with app.model to cover the debug property. Finially, the properties in the '\view' path are:
+When global or local model exist at the same time, they will be automatically combined. If there is duplicated property, the model in the handler will cover that in middleware, the local model will cover the global one. For example, when all code above exist in the server, userModel will be combined with res.model and covers its username property. Then the combined model will merge with app.model to cover the debug property. Finally, the properties in the '\view' path are:
 
 ![Model merge browser display model][2]
 
