@@ -69,7 +69,7 @@ Redis hash是一个string类型的field和value的映射表。一个hash类型�
        gender: 'male',
        nVisit: '10000' } ]
 
-### 批量打印（指定field及key）: hselect [num of fields] field1 field2 ... key1 key2 ...
+### Hash 批量打印（指定field及key）: hselect [num of fields] field1 field2 ... key1 key2 ...
 
     client.hselect(
         ['name', 'email', 'isPublic', 'nVisit']
@@ -102,7 +102,7 @@ Redis hash是一个string类型的field和value的映射表。一个hash类型�
         nVisit: '10000' } ]
 
 
-### 批量打印（只指定key）: hmgetall key1 key2 ...
+### Hash 批量打印（只指定key）: hmgetall key1 key2 ...
 
     client.hmgetall(['userInfo:100', 'userInfo:1003', 'userInfo:100'], function(err, objs) {
       console.log(objs)
