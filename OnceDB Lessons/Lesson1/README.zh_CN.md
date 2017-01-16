@@ -69,8 +69,70 @@ Redis hash是一个string类型的field和value的映射表。一个hash类型�
        gender: 'male',
        nVisit: '10000' } ]
 
+### 批量打印（指定field及key）: hselect [num of fields] field1 field2 ... key1 key2 ...
 
+    client.hselect(
+        ['name', 'email', 'isPublic', 'nVisit']
+      , ['userInfo:100', 'userInfo:103', 'userInfo:1005', 'userInfo:1006']
+      , function(err, objs) {
+        console.log(objs)
+    })
+
+输出结果
+
+    > [ { _key: 'userInfo:100',
+        name: 'shanghai',
+        email: null,
+        isPublic: null,
+        nVisit: null },
+    { _key: 'userInfo:103',
+        name: 'newghost',
+        email: null,
+        isPublic: null,
+        nVisit: null },
+    { _key: 'userInfo:1005',
+        name: 'Mars2',
+        email: null,
+        isPublic: '0',
+        nVisit: '10000' },
+    { _key: 'userInfo:1006',
+        name: 'Mar',
+        email: null,
+        isPublic: '1',
+        nVisit: '10000' } ]
+
+
+### 批量打印（只指定key）: hmgetall key1 key2 ...
+
+    client.hmgetall(['userInfo:100', 'userInfo:1003', 'userInfo:100'], function(err, objs) {
+      console.log(objs)
+    })
+
+输出结果
+
+    > [ { _key: 'userInfo:100',
+        id: '100',
+        name: 'shanghai',
+        gender: 'female',
+        poster: '龙' },
+      { _key: 'userInfo:1003',
+        name: 'Telyer',
+        id: '1003',
+        gender: 'male',
+        active: '0',
+        joinTime: '1484445746020',
+        poster: '王五',
+        isPublic: '0',
+        nVisit: '300' },
+      { _key: 'userInfo:100',
+        id: '100',
+        name: 'shanghai',
+        gender: 'female',
+        poster: '龙' } ]
+  
+  
 【文档不断完善中】
-
+  
+  
 
 原文地址：[OnceDoc Blog](http://cn.oncedoc.com/page/view/helper/ixzojnl2cn01am5d)
