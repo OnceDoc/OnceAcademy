@@ -73,4 +73,4 @@ Redis hash是一个string类型的field和value的映射表。一个hash类型�
 【文档不断完善中】
 
 
-原文地址：[OnceDoc Blog](http://cn.oncedoc.com/blog/view/ixzojnl2cn01am5d)
+原文地址：[OnceDoc Blog](http://cn.oncedoc.com/page/view/helper/ixzojnl2cn01am5d)
