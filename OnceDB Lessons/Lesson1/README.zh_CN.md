@@ -1,4 +1,4 @@
-# 我们做了一个支持全文搜索和关系查询的Redis
+# OnceDB支持全文搜索和关系查询的Redis：安装及使用教程
 
 我们的企业网盘[OnceDoc](http://cn.oncedoc.com)和管理软件采用内存数据库Redis。Redis 是一个使用 C 语言编写的键值对存储数据库，体积小巧，性能优异，实施简单。很多大并发网站如Twitter、GitHub  Weibo、Snapchat、Flickr、阿里等都将其用作SESSION存储及缓存的管理。出于性能的考虑 Redis 自带的命令一般不支持按值查找。但是企业软件又需要数据库有搜索、复杂条件查询以及聚合分析的能力。为了实现这些功能我们修改了Redis的源码。并创建了一个新的开源分支 [OnceDB](https://github.com/OnceDoc/OnceDB)，用户可以到Github下载最新的[Windows版本](https://github.com/OnceDoc/OnceDB.win/releases)进行测试。
 
@@ -73,4 +73,4 @@ Redis hash是一个string类型的field和value的映射表。一个hash类型�
 【文档不断完善中】
 
 
-原文地址：http://cn.oncedoc.com/sign/in
+原文地址：[OnceDoc Blog](http://cn.oncedoc.com/blog/view/ixzojnl2cn01am5d)
