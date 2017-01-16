@@ -52,12 +52,12 @@ string是redis最基本的类型，而且string类型是二进制安全的。即
 
 Redis hash是一个string类型的field和value的映射表。一个hash类型的key含多个field，一个field对应一个value。Hash非常适合存放JSON对象。hsearch支持对field进行查询。
 
-比如查询一条userInfo记录，其中 nVisit > 100 ，也可写作： 'nVisit' : { '$gt' : '100' }
+比如查询一条userInfo记录，其中 {'>':'100'} ，也可使用类mongodb语法：{'$gt':'100'}：
 
     client.hsearch('userInfo:*', {
         'name'     : 'Mar'
       , 'gender'   : 'male'
-      , 'nVisit'   : { '>' : '100' }
+      , 'nVisit'   : {'>':'100'}
     }, function(err, objs) {
         console.log(objs)  
     })
