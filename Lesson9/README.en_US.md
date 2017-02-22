@@ -58,7 +58,7 @@ It is sometimes complicated to deal with template nesting, because there might b
         <!--#include="/analytics.tmpl"-->
   
 OnceIO built-in preload
-The method loads all template files under a certain catelog in advance to preload the cache pool. Code for applying preload on tmpl file under the current catalog is as follows:
+The method loads all template files under a certain catelog in advance to preload the cache pool. app.clear() doesn't influence the content in preload. Code for applying preload on tmpl file under the current catalog is as follows:
 
 
 	app.preload('.', '.tmpl')

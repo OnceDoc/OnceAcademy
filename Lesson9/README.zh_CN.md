@@ -57,7 +57,7 @@ templateCache 的默认值为 false，即不在服务器端缓存模板文件等
 
         <!--#include="/analytics.tmpl"-->
 
-OnceIO 内置了 preload 方法来预加载某一目录下的所有模板文件，预先加载缓存池。对当前目录下的 tmpl 后缀的文件使用 preload 的示例代码如下： 
+OnceIO 内置了 preload 方法来预加载某一目录下的所有模板文件，预先加载缓存池。app.clear()不影响preload的内容。对当前目录下的 tmpl 后缀的文件使用 preload 的示例代码如下： 
 
 	app.preload('.', '.tmpl')
 
