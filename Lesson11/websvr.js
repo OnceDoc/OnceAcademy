@@ -1,4 +1,4 @@
-var onceio = require('../onceio/onceio')
+var onceio = require('onceio')
 var app = onceio()
 
 
@@ -6,7 +6,8 @@ var app = onceio()
 app.get('/set_cookie', function(req, res) {
 	res.cookie('sessionID', 1234, { domain: '', path: '/', httponly: true })
 	//equals to "res.cookie('sessionID', 1234)"
-	res.send('<b>res.cookies:</b> ' + res.cookies)
+	//res.send('<b>res.cookies:</b> ' + res.cookies)
+	res.send('{' + res.cookies + '}' )
 })
 
 //delete Cookie

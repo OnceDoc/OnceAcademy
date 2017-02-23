@@ -63,7 +63,7 @@ The method loads all template files under a certain catelog in advance to preloa
 
 	app.preload('.', '.tmpl')
 
-The first parameter of preload is the relative path, as the '.' represents the path of home in web, home is the first property of the OnceIO application, which can be defined in the application definition with the default value as './', refering to the current catalog. The second parameter in preload is the file type, the '.tmpl' in the example represents the dynamic web page files.
+The first parameter of preload is the relative path, as the '.' represents the path of home in web, home is the first property of the OnceIO application, which can be set in the application definition with the default value as './', refering to the current catalog. The second parameter in preload is the file type, the '.tmpl' in the example represents the dynamic web page files.
 
 After use preload, the server could load the template file in advance and save it even without request from the client. When the templateCache is set as true, the user can get the rendered web page without the server fetching the template file from the HD.
   
