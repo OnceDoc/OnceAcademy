@@ -4,14 +4,18 @@
   <link rel='stylesheet' href='/form/css/form.css'>
 </head>
 <body>
+
   <!--#include="head.html"-->
+
   <h1>Hello {{=it.title}}</h1>
   <form action='/form/login' method='get'>
     <p>Username: <input type='text' name='username' value='admin' /></p>
     <p>Password: <input type='text' name='password' value='123456' /></p>
     <input type='submit' value='Login' />
   </form>
+
   <!--#include="foot.html"-->
+
   <script src="/form/js/form.js"></script>
 </body>
 </html>
